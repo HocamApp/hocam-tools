@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Marka değerleri hocam-frontend/src/app/globals.css (DESIGN.md) ile aynıdır.
+   --gold yalnızca dolgu içindir, metin rengi olarak kullanılmaz (1,6:1). */
+:root {
+  --pink: #fa0050;
+  --pink-deep: #d70f64;
+  --pink-pale: #fce5f1;
+  --gold: #ffd100;
+  --gold-ink: #4a3b00;
+  --paper: #fbf6f6;
+  --ink: #02171a;
+  --ink-mid: #5c6b6d;
+  --line: #e6dddd;
+  --surface: #ffffff;
+  --success: #1c7a55;
+  --error: #b33a24;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 1rem;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  /* Tüm etkileşimli öğelerde görünür odak halkası. */
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Açıklayıcı yazılar için küçük tipografi; typography eklentisi gerekmez. */
+  .prose-hocam h2 {
+    @apply mt-10 text-2xl font-bold first:mt-0;
+  }
+  .prose-hocam h3 {
+    @apply mt-6 text-lg font-bold;
+  }
+  .prose-hocam p {
+    @apply mt-3 leading-relaxed;
+  }
+  .prose-hocam ul {
+    @apply mt-3 list-disc space-y-1 pl-6;
+  }
+  .prose-hocam a {
+    @apply font-medium text-pink-deep underline;
+  }
+}
