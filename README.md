@@ -4,7 +4,8 @@ Free YKS micro tools served at `https://www.hocamozelders.com/araclar/*`. A sepa
 (App Router, Tailwind, no runtime deps beyond Next/React) that the main site proxies with one rewrite,
 so the tools share the main domain's SEO authority.
 
-Status: Phase 1 done locally (TYT/AYT net, OBP). Not yet in git, not deployed, not wired to the main site.
+Status: Phase 1 on `main` (TYT/AYT net, OBP). Not deployed and not wired to the main site yet.
+Agents and contributors: read `AI_AGENT_RULES.md` first (accuracy, privacy, SEO and PR rules; in Turkish like the sibling repos).
 
 ## Run
 
