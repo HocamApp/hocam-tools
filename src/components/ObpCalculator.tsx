@@ -10,7 +10,7 @@ const CAMPAIGN = "obp-hesaplama";
 
 export function ObpCalculator() {
   const [value, setValue] = useState("");
-  const [previouslyPlaced, setPreviouslyPlaced] = useState(false);
+  const [placedLastYear, setPlacedLastYear] = useState(false);
   const [result, setResult] = useState<ReturnType<typeof computeObp> | null>(null);
   const [error, setError] = useState(false);
   const resultRef = useRef<HTMLElement>(null);
@@ -29,12 +29,12 @@ export function ObpCalculator() {
       return;
     }
     setError(false);
-    setResult(computeObp(diploma, previouslyPlaced));
+    setResult(computeObp(diploma, placedLastYear));
   }
 
   function reset() {
     setValue("");
-    setPreviouslyPlaced(false);
+    setPlacedLastYear(false);
     setResult(null);
     setError(false);
     document.getElementById("diploma")?.focus();
@@ -49,7 +49,7 @@ export function ObpCalculator() {
     <div>
       <form onSubmit={onSubmit} noValidate aria-label="OBP hesaplama" className="max-w-md">
         <label htmlFor="diploma" className={labelCls}>
-          Diploma notu ({MIN_DIPLOMA}–{MAX_DIPLOMA} arası, 100&apos;lük sistem)
+          Diploma notu (100&apos;lük sistem)
         </label>
         <input
           id="diploma"
@@ -69,22 +69,28 @@ export function ObpCalculator() {
         <p id="diploma-ipucu" className="mt-1 text-sm text-ink-mid">Örnek: 85,5</p>
         {error && (
           <p id="diploma-hata" className="mt-1 text-sm font-medium text-error">
-            Diploma notu {MIN_DIPLOMA} ile {MAX_DIPLOMA} arasında olmalı ve en çok iki ondalık içerebilir.
+            Diploma notu 0 ile {MAX_DIPLOMA} arasında olmalı ve en çok iki ondalık içerebilir.
           </p>
         )}
 
         <label className="mt-5 flex items-start gap-3 text-base">
           <input
             type="checkbox"
-            checked={previouslyPlaced}
+            checked={placedLastYear}
             onChange={(e) => {
-              setPreviouslyPlaced(e.target.checked);
+              setPlacedLastYear(e.target.checked);
               setResult(null);
             }}
+            aria-describedby="kirik-ipucu"
             className="mt-1 h-5 w-5 accent-pink-deep"
           />
-          <span>Daha önceki yıllarda bir yükseköğretim programına yerleştim (kırık OBP)</span>
+          <span>Geçen yıl bir yükseköğretim programına yerleştim (kırık OBP)</span>
         </label>
+        <p id="kirik-ipucu" className="mt-1 pl-8 text-sm text-ink-mid">
+          Sınava girdiğin yılın bir önceki yılında ÖSYM merkezî yerleştirmesiyle (ÖZYES dâhil) bir
+          programa yerleştiysen, kayıt yaptırmasan bile, ya da özel yetenek sınavıyla bir programa
+          kayıt olduysan işaretle. Daha eski yıllardaki yerleşme sayılmaz.
+        </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
           <button type="submit" className={btnPrimary}>Hesapla</button>
@@ -106,6 +112,11 @@ export function ObpCalculator() {
             <dt>Yerleştirme puanına katkı</dt>
             <dd className="text-right text-2xl font-bold">{formatScore(result.contribution)}</dd>
           </dl>
+          {result.clamped && (
+            <p className="mt-3 text-sm text-ink-mid">
+              Diploma notu {MIN_DIPLOMA}&apos;nin altında olduğu için ÖSYM {MIN_DIPLOMA} olarak değerlendirir.
+            </p>
+          )}
           <div className="mt-5 rounded-xl bg-pink-pale p-4">
             <p>Hedef puanına ulaşmak için net artırman gerekiyorsa hocalarla tanış.</p>
             <a

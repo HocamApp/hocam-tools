@@ -32,9 +32,11 @@ Everything lives under `basePath: "/araclar"`, so `/` alone is a 404 by design.
 - A new tool needs formulas tested against an official source, an `updatedAt` date, and visible explanatory text.
 - Brand tokens are copied from `hocam-frontend/src/app/globals.css`; keep them in sync by hand.
 
-## Before first publish (verify against the current ÖSYM kılavuz)
+## Sources and re-verification
 
-- TYT/AYT question counts per test (`net.ts`), OBP factors 0.12 / 0.06 and the kırık OBP condition (`obp.ts`).
+Formulas and test structure were checked on 10 Oct 2026 against ÖSYM's 2026-YKS SSS and the 2026-TYT/AYT
+question booklets; links are in the header comments of `src/lib/net.ts` and `src/lib/obp.ts`.
+Re-check when the 2027 kılavuz is published and bump `updatedAt` in `src/lib/tools.ts`.
 
 ## Phase 2: wiring into `hocam-frontend` (small PR, flag-off by default)
 

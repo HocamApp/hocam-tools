@@ -24,7 +24,7 @@ export const TOOLS: Tool[] = [
     description:
       "TYT'de doğru ve yanlış sayılarını gir, ders bazında ve toplam netini anında hesapla. Ücretsiz, kayıt gerektirmez.",
     blurb: "Türkçe, Sosyal, Matematik ve Fen netini ders ders hesapla.",
-    updatedAt: "2026-10-09",
+    updatedAt: "2026-10-10",
   },
   {
     slug: "ayt-net-hesaplama",
@@ -33,7 +33,7 @@ export const TOOLS: Tool[] = [
     description:
       "Sayısal, Eşit Ağırlık veya Sözel alanını seç, AYT doğru ve yanlışlarını gir; ders bazında netini hesapla. Ücretsiz.",
     blurb: "Alanını seç, AYT netini ders bazında gör.",
-    updatedAt: "2026-10-09",
+    updatedAt: "2026-10-10",
   },
   {
     slug: "obp-hesaplama",
@@ -42,7 +42,7 @@ export const TOOLS: Tool[] = [
     description:
       "Diploma notunu gir, OBP puanını ve YKS yerleştirme puanına katkısını hesapla. Kırık OBP durumunu da gösterir.",
     blurb: "Diploma notundan OBP'ni ve puana katkısını hesapla.",
-    updatedAt: "2026-10-09",
+    updatedAt: "2026-10-10",
   },
 ];
 

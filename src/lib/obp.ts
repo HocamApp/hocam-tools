@@ -1,28 +1,38 @@
 /**
- * OBP (Ortaöğretim Başarı Puanı): diploma notu (100'lük) × 5 → 250–500.
- * Yerleştirme puanına katkısı OBP × 0,12 (en çok 60). Önceki yıllarda bir
- * yükseköğretim programına yerleşmiş adaylarda katsayı 0,06'dır ("kırık OBP").
+ * OBP (Ortaöğretim Başarı Puanı).
  *
- * Katsayılar ÖSYM kılavuzundan her yıl doğrulanmalı.
+ * Kaynak: ÖSYM 2026-YKS Sıkça Sorulan Sorular, soru 48-52
+ * (https://dokuman.osym.gov.tr/pdfdokuman/2026/YKS/sss_yksd19022026.pdf).
+ * Doğrulama: 10 Ekim 2026. 2027-YKS kılavuzu/SSS yayımlanınca yeniden kontrol edilmeli.
+ *
+ * - Diploma notu (100'lük) × 5 = OBP. Not bildirilmeyen veya 50'nin altındaki diploma notu 50
+ *   sayılır; OBP en az 250, en çok 500 olur.
+ * - Yerleştirme puanına katkı: OBP × 0,12 (en çok 60).
+ * - Katsayı yarıya iner (0,06, en çok 30): sınav yılından bir önceki yılın YKS puanıyla ÖSYM
+ *   merkezî yerleştirmesiyle (ÖZYES dâhil) bir programa yerleştirilen adaylar (kayıt olsun veya
+ *   olmasın) ve özel yetenek sınavı sonucu bir programa kayıt olan adaylar için.
+ * - Meslek lisesi ek puanı ayrı bir kuraldır; burada hesaplanmaz.
  */
 
 export const MIN_DIPLOMA = 50;
 export const MAX_DIPLOMA = 100;
 const FACTOR = 0.12;
-const FACTOR_PREVIOUSLY_PLACED = 0.06;
+const FACTOR_HALVED = 0.06;
 
-/** "85,5" veya "85.5"; en çok iki ondalık, 50–100. Geçersizse null. */
+/** "85,5" veya "85.5"; en çok iki ondalık, 0–100. Geçersizse null. */
 export function parseDiploma(value: string): number | null {
   const v = value.trim().replace(",", ".");
   if (!/^\d{1,3}(\.\d{1,2})?$/.test(v)) return null;
   const n = Number(v);
-  return n >= MIN_DIPLOMA && n <= MAX_DIPLOMA ? n : null;
+  return n <= MAX_DIPLOMA ? n : null;
 }
 
-export function computeObp(diploma: number, previouslyPlaced: boolean) {
-  const obp = diploma * 5;
-  const contribution = obp * (previouslyPlaced ? FACTOR_PREVIOUSLY_PLACED : FACTOR);
-  return { obp, contribution };
+/** `clamped`: not 50'nin altındaydı ve ÖSYM kuralı gereği 50 sayıldı. */
+export function computeObp(diploma: number, placedLastYear: boolean) {
+  const clamped = diploma < MIN_DIPLOMA;
+  const obp = Math.max(diploma, MIN_DIPLOMA) * 5;
+  const contribution = obp * (placedLastYear ? FACTOR_HALVED : FACTOR);
+  return { obp, contribution, clamped };
 }
 
 /** 51,30 gibi Türkçe ondalık, iki hane. */

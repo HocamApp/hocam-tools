@@ -1,8 +1,14 @@
 /**
  * YKS net hesabı: net = doğru − yanlış / 4. Boş sorular neti etkilemez.
  *
- * Soru sayıları ÖSYM'nin güncel kılavuzundaki test dağılımıdır; her yıl
- * kılavuzdan doğrulanmalı (TYT 120, her AYT alan testi 80 soru).
+ * Kaynaklar (doğrulama: 10 Ekim 2026; 2027 kılavuzu yayımlanınca yeniden kontrol edilmeli):
+ * - Net formülü: ÖSYM 2026-YKS Sıkça Sorulan Sorular, soru 40
+ *   (https://dokuman.osym.gov.tr/pdfdokuman/2026/YKS/sss_yksd19022026.pdf).
+ * - Test yapısı: ÖSYM 2026-TYT ve 2026-AYT soru kitapçıkları ilk sayfaları
+ *   (dokuman.osym.gov.tr/pdfdokuman/2026/YKS/TSK/yks_tyt_2026_kitapcik_d350.pdf ve
+ *   yks_ayt_2026_kitapcik_kt12.pdf). TYT 120 soru, her AYT alan testi 80 soru.
+ * - Din Kültürü ve Ahlak Bilgisi almayan adaylar o bölümde ilave Felsefe (TYT) / Felsefe Grubu
+ *   (AYT Sosyal Bilimler-2) sorularını cevaplar; cevaplanan soru sayısı değişmez.
  */
 
 export type Section = {
@@ -50,7 +56,7 @@ export const AYT_FIELDS: Record<AytField, { label: string; sections: Section[] }
       { id: "tarih2", label: "Tarih-2", questions: 11 },
       { id: "cografya2", label: "Coğrafya-2", questions: 11 },
       { id: "felsefe", label: "Felsefe Grubu", questions: 12 },
-      { id: "din", label: "Din Kültürü", questions: 6 },
+      { id: "din", label: "Din Kültürü / ilave Felsefe", questions: 6 },
     ],
   },
 };

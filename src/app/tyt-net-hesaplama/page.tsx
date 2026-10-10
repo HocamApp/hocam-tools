@@ -16,6 +16,10 @@ const FAQ: Faq[] = [
     a: "Beş şıktan birini rastgele işaretlemenin beklenen neti sıfırdır. En az bir şıkkı eleyebiliyorsan tahmin etmek beklenen netini artırır.",
   },
   {
+    q: "Din Kültürü dersi almadıysam sorular nasıl değişir?",
+    a: "Ortaöğretimde Din Kültürü ve Ahlak Bilgisi dersini almayan veya farklı müfredatla alan adaylar, Sosyal Bilimler testinde Din Kültürü yerine ilave Felsefe sorularını cevaplar. Cevaplanan soru sayısı yine 20'dir; netini aynı şekilde gir.",
+  },
+  {
     q: "Bu araç resmî sonuç verir mi?",
     a: "Hayır. Araç yalnızca net hesaplar. Resmî sonuçları ve kılavuz hükümlerini ÖSYM açıklar.",
   },
@@ -46,9 +50,9 @@ export default function Page() {
           <p>TYT&apos;de toplam 120 soru bulunur:</p>
           <ul>
             <li>Türkçe: 40 soru</li>
-            <li>Sosyal Bilimler: 20 soru</li>
+            <li>Sosyal Bilimler: 20 soru (Tarih, Coğrafya, Felsefe ve Din Kültürü&apos;nden 5&apos;er)</li>
             <li>Temel Matematik: 40 soru</li>
-            <li>Fen Bilimleri: 20 soru</li>
+            <li>Fen Bilimleri: 20 soru (Fizik 7, Kimya 7, Biyoloji 6)</li>
           </ul>
 
           <h2>Net ile puan aynı şey değildir</h2>
