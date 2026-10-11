@@ -17,8 +17,10 @@
 - Puan/sıralama tahmini, LGS, YKS geri sayımı ve bölüm bulucu araçları **veri kaynağı onaylanmadan
   eklenmez**. Yıllık veriye bağlı bir araç eklemek, o veriyi her yıl güncelleme sorumluluğunu da
   getirir; bunu PR açıklamasında belirt.
-- İlk yayından önce ÖSYM kılavuzundan doğrulanacaklar: TYT/AYT soru dağılımı (`src/lib/net.ts`),
-  OBP katsayıları ve kırık OBP koşulu (`src/lib/obp.ts`).
+- TYT/AYT soru dağılımı, net formülü ve OBP kuralları 10 Ekim 2026'da ÖSYM'nin 2026 belgelerinden
+  (SSS ve TYT/AYT soru kitapçıkları) doğrulandı; kaynak bağlantıları `src/lib/net.ts` ve
+  `src/lib/obp.ts` dosya başlarındadır. 2027-YKS Kılavuzu/SSS yayımlanınca yeniden kontrol edilir ve
+  `updatedAt` güncellenir.
 - Sonuçlar bilgilendirmedir; sayfalardaki "resmî değerlendirme ÖSYM'ye aittir" uyarısı kaldırılmaz.
 
 ## 2. Gizlilik (KVKK)

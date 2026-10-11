@@ -9,7 +9,15 @@ export const metadata = toolMetadata(tool);
 const FAQ: Faq[] = [
   {
     q: "OBP yerleştirme puanına en çok kaç puan ekler?",
-    a: "OBP puanı en çok 500 olabilir ve 0,12 ile çarpıldığı için yerleştirme puanına en çok 60 puan katkı yapar. Kırık OBP'de bu üst sınır 30 puandır.",
+    a: "OBP puanı en çok 500 olabilir ve 0,12 ile çarpıldığı için yerleştirme puanına en çok 60 puan katkı yapar. Katsayının yarıya düştüğü durumda (0,06) üst sınır 30 puandır.",
+  },
+  {
+    q: "Diploma notum 50'nin altındaysa ne olur?",
+    a: "ÖSYM, diploma notu 50'nin altında olan veya bildirilmeyen adayların notunu 50 sayar. Bu yüzden OBP en az 250 olur.",
+  },
+  {
+    q: "Geçen yıl yerleştim ama kayıt yaptırmadım. Katsayım düşer mi?",
+    a: "Evet. ÖSYM'nin sıkça sorulan sorularına göre, bir önceki yıl ÖSYM merkezî yerleştirmesiyle bir programa yerleşen adayların OBP katsayısı, kayıt olsun veya olmasın, yarıya düşer.",
   },
   {
     q: "Diploma notum 100'lük sistemde değilse ne yapmalıyım?",
@@ -36,7 +44,8 @@ export default function Page() {
           <h2>OBP nasıl hesaplanır?</h2>
           <p>
             OBP, 100&apos;lük sistemdeki diploma notunun 5 ile çarpılmasıyla bulunur; en düşük 250, en
-            yüksek 500 olur. Örneğin diploma notu 85,5 olan bir öğrencinin OBP&apos;si 85,5 × 5 = 427,5&apos;tir.
+            yüksek 500 olur. Diploma notu 50&apos;nin altında olan veya bildirilmeyen adayların notu 50
+            sayılır. Örneğin diploma notu 85,5 olan bir öğrencinin OBP&apos;si 85,5 × 5 = 427,5&apos;tir.
           </p>
 
           <h2>Yerleştirme puanına katkısı</h2>
@@ -47,9 +56,16 @@ export default function Page() {
 
           <h2>Kırık OBP nedir?</h2>
           <p>
-            Daha önceki yıllarda bir yükseköğretim programına yerleşmiş adaylarda OBP katsayısı 0,06
-            uygulanır. Bu durumda katkı en çok 30 puana düşer. Kendi durumunun bu kapsama girip girmediğini
-            ÖSYM kılavuzundan kontrol et.
+            Sınava girdiğin yılın bir önceki yılında, o yılın YKS puanıyla ÖSYM merkezî yerleştirmesiyle
+            (ÖZYES dâhil) bir programa yerleştirildiysen, kayıt yaptırmamış olsan bile, ya da özel yetenek
+            sınavı sonucu bir programa kayıt olduysan OBP katsayın yarıya düşer. 0,12 yerine 0,06
+            uygulanır ve katkı en çok 30 puan olur. Yalnızca bir önceki yılın yerleştirmesi sayılır.
+          </p>
+
+          <h2>Meslek lisesi mezunları</h2>
+          <p>
+            Belirli koşullarda meslek lisesi mezunlarına ayrı bir ek puan uygulanır. Bu araç o ek puanı
+            hesaplamaz; koşullar için ÖSYM kılavuzuna bak.
           </p>
         </>
       }

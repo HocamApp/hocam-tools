@@ -16,6 +16,10 @@ const FAQ: Faq[] = [
     a: "Her yanlış, doğrularından 0,25 net götürür; 4 yanlış 1 doğruyu siler. Boş sorular neti etkilemez.",
   },
   {
+    q: "Din Kültürü dersi almadıysam sorular nasıl değişir?",
+    a: "Ortaöğretimde Din Kültürü ve Ahlak Bilgisi dersini almayan veya farklı müfredatla alan adaylar, AYT Sosyal Bilimler-2 testinde Din Kültürü yerine ilave Felsefe Grubu sorularını cevaplar (6 soru). Sözel alanında bu soruların sonucunu \"Din Kültürü / ilave Felsefe\" satırına gir.",
+  },
+  {
     q: "Bu araç resmî sonuç verir mi?",
     a: "Hayır. Araç yalnızca net hesaplar. Resmî sonuçları ve kılavuz hükümlerini ÖSYM açıklar.",
   },
@@ -50,7 +54,8 @@ export default function Page() {
             </li>
             <li>
               <strong>Sözel:</strong> Türk Dili ve Edebiyatı 24, Tarih-1 10, Coğrafya-1 6, Tarih-2 11,
-              Coğrafya-2 11, Felsefe Grubu 12, Din Kültürü 6 soru.
+              Coğrafya-2 11, Felsefe Grubu 12, Din Kültürü 6 soru (Din Kültürü almayanlar bunun yerine ilave
+              Felsefe Grubu sorularını cevaplar).
             </li>
           </ul>
 
