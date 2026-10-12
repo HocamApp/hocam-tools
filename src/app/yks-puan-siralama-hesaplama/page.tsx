@@ -10,11 +10,11 @@ export const metadata = toolMetadata(tool);
 const FAQ: Faq[] = [
   {
     q: "Bu sonuç kesin mi?",
-    a: "Hayır. Sonuç bir tahmin aralığıdır. ÖSYM, puanı 100-500 aralığına ölçeklerken kullandığı en küçük ve en büyük değerleri yayımlamaz; biz bunları yayımlanan puan dağılımından kestiriyoruz. Sıra ise o yılın dağılımına göre hesaplanır ve yıldan yıla değişir. Resmî puan ve sıran yalnızca ÖSYM sonuç belgesindedir.",
+    a: "Hayır. Sonuç yaklaşık bir tahmindir. ÖSYM, puanı 100-500 aralığına ölçeklerken kullandığı en küçük ve en büyük değerleri yayımlamaz; biz bunları yayımlanan puan dağılımından kestiriyoruz. Sıra ise o yılın dağılımına göre hesaplanır ve yıldan yıla değişir. Resmî puan ve sıran yalnızca ÖSYM sonuç belgesindedir.",
   },
   {
-    q: "Sıralama neden iki yılla gösteriliyor?",
-    a: "Aynı net, sınavın zorluğuna ve adayların başarısına göre her yıl farklı bir puana ve sıraya denk gelir. 2026 ve 2025 verisini yan yana göstermek, bu belirsizliği saklamadan görmeni sağlar. 2027 sonuçları açıklandığında araç bu yıla göre güncellenir; senin sınavında sıra farklı çıkabilir.",
+    q: "Sıralama neden iki yılla hesaplanıyor?",
+    a: "Aynı net, sınavın zorluğuna ve adayların başarısına göre her yıl farklı bir puana ve sıraya denk gelir. 2026 ve 2025 verisiyle ayrı ayrı hesaplıyor, tablodaki iki sütunu ve baştaki ortalamayı gösteriyoruz. 2027 sonuçları açıklandığında araç bu yıla göre güncellenir; senin sınavında sıra farklı çıkabilir.",
   },
   {
     q: "Sınav puanı ile yerleştirme puanı arasındaki fark nedir?",
@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <ToolPage
       tool={tool}
-      lead="TYT ve AYT netlerini ve diploma notunu gir; tahmini sınav puanını, yerleştirme puanını ve başarı sıranı tek sayfada gör. Sonuç, ÖSYM'nin yayımladığı verilerle hesaplanan bir tahmin aralığıdır."
+      lead="TYT ve AYT netlerini ve diploma notunu gir; tahmini sınav puanını, yerleştirme puanını ve başarı sıranı tek sayfada gör. Sonuçlar, ÖSYM'nin yayımladığı verilerle hesaplanan yaklaşık değerlerdir."
       faq={FAQ}
       article={
         <>
@@ -70,12 +70,12 @@ export default function Page() {
             </li>
           </ol>
 
-          <h2>Neden tek sayı vermiyoruz?</h2>
+          <h2>Sonuç neden yaklaşık?</h2>
           <p>
             Aynı net her yıl farklı puan getirebilir, çünkü standart puan o yılın ortalama ve sapmasına
             bağlıdır. Ayrıca ÖSYM&apos;nin 100-500 ölçeğindeki iki sınır değerini bilmediğimiz için puanı
-            kestiriyoruz. Bu yüzden puanı ve sırayı aralık olarak, iki farklı yılın dağılımıyla gösteriyoruz.
-            Tek sayı vermek, olmayan bir kesinliği göstermek olurdu.
+            kestiriyoruz. Bu yüzden sonuçlar yaklaşık değerlerdir: iki farklı yılın dağılımıyla ayrı ayrı
+            hesaplıyor, baştaki sırayı bu iki değerin ortalaması olarak veriyoruz.
           </p>
 
           <h2>Kaynaklar</h2>

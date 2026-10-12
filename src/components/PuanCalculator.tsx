@@ -44,8 +44,9 @@ const MODES: { id: Mode; label: string }[] = [
 ];
 
 const nf = new Intl.NumberFormat("tr-TR");
-const puanText = (r: Range) => `${Math.round(r.low)} – ${Math.round(r.high)}`;
-const rankText = (r: Range) => `${nf.format(roundRank(r.low))} – ${nf.format(roundRank(r.high))}`;
+/* Tek değer: modelin en olası (orta) değeri. Aralık hesabı puan.ts'te kalır ama gösterilmez. */
+const puanText = (r: Range) => String(Math.round(r.mid));
+const rankText = (r: Range) => nf.format(roundRank(r.mid));
 
 type Output = {
   year: Year;
@@ -190,8 +191,6 @@ export function PuanCalculator() {
     );
   }
 
-  const headline = result?.out[0];
-
   return (
     <div>
       <form onSubmit={onSubmit} noValidate aria-label="YKS puan ve sıralama hesaplama">
@@ -285,18 +284,22 @@ export function PuanCalculator() {
           ) : (
             <>
               {(() => {
-                const main = headline?.field ?? headline?.tyt;
-                if (!main) return null;
-                const rank = main.placementRank ?? main.examRank;
+                const mains = result.out.map((o) => o.field ?? o.tyt).filter((m): m is SchemeResult => m !== null);
+                if (mains.length === 0) return null;
+                const placement = mains[0].placementRank !== null;
+                // İki yılın (2026 ve 2025 verisi) ortalaması.
+                const avg =
+                  mains.reduce((sum, m) => sum + (placement ? m.placementRank! : m.examRank).mid, 0) / mains.length;
                 return (
                   <p className="mt-3 text-lg">
-                    Tahmini başarı sıran ({main.placementRank ? "yerleştirme puanı" : "sınav puanı"}, 2026 dağılımı):{" "}
-                    <strong className="text-2xl">{rankText(rank)}</strong>
+                    Başarı sıran ({placement ? "yerleştirme puanı" : "sınav puanı"}):{" "}
+                    <strong className="text-2xl">{nf.format(roundRank(avg))}</strong> (yaklaşık olarak)
                   </p>
                 );
               })()}
               <p className="mt-1 text-sm text-ink-mid">
-                Bu bir aralıktır, tek bir sayı değildir; aşağıda nedenini ve 2025 dağılımıyla karşılaştırmayı bulabilirsin.
+                Bu sayı, 2026 ve 2025 verisiyle bulunan değerlerin ortalamasıdır. Aynı net her yıl farklı sıraya denk
+                gelir; sonuçlar yaklaşık hesaptır, resmî sonuç ÖSYM sonuç belgesindedir.
               </p>
 
               {(
