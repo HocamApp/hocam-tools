@@ -35,15 +35,6 @@ export const TOOLS: Tool[] = [
     blurb: "LGS netinden ya da puanından yaklaşık yüzdelik dilimini ve sıranı gör.",
     updatedAt: "2026-10-12",
   },
-  {
-    slug: "kpss-puan-hesaplama",
-    name: "KPSS Lisans Puan Hesaplama",
-    metaTitle: "KPSS Lisans Puan Hesaplama (P1, P2, P3)",
-    description:
-      "Genel Yetenek ve Genel Kültür netini gir; KPSS Lisans P1, P2 ve P3 puanını ÖSYM'nin resmî formülüyle yaklaşık olarak hesapla. Ücretsiz.",
-    blurb: "GY-GK netinden KPSS Lisans P1, P2 ve P3 puanını gör.",
-    updatedAt: "2026-10-12",
-  },
 ];
 
 export function toolMetadata(tool: Tool): Metadata {
