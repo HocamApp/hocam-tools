@@ -15,9 +15,11 @@ type Props = {
   article: ReactNode;
   /** Hesaplayıcı. */
   children: ReactNode;
+  /** Ana siteye (YKS özel ders) yönlendiren kutu; YKS dışı araçlarda kapatılır. Varsayılan: açık. */
+  showCta?: boolean;
 };
 
-export function ToolPage({ tool, lead, faq, article, children }: Props) {
+export function ToolPage({ tool, lead, faq, article, children, showCta = true }: Props) {
   const others = TOOLS.filter((t) => t.slug !== tool.slug);
   const updated = new Date(tool.updatedAt).toLocaleDateString("tr-TR", {
     day: "numeric",
@@ -87,21 +89,23 @@ export function ToolPage({ tool, lead, faq, article, children }: Props) {
         ))}
       </section>
 
-      <section
-        aria-labelledby="destek"
-        className="mt-12 max-w-2xl rounded-2xl bg-pink-pale p-6"
-      >
-        <h2 id="destek" className="text-xl font-bold">YKS hazırlığında yalnız değilsin</h2>
-        <p className="mt-2 text-ink">
-          Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
-        </p>
-        <a
-          href={mainUrl("/yks-ozel-ders", tool.slug)}
-          className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
+      {showCta && (
+        <section
+          aria-labelledby="destek"
+          className="mt-12 max-w-2xl rounded-2xl bg-pink-pale p-6"
         >
-          YKS özel ders hocalarını gör
-        </a>
-      </section>
+          <h2 id="destek" className="text-xl font-bold">YKS hazırlığında yalnız değilsin</h2>
+          <p className="mt-2 text-ink">
+            Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
+          </p>
+          <a
+            href={mainUrl("/yks-ozel-ders", tool.slug)}
+            className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
+          >
+            YKS özel ders hocalarını gör
+          </a>
+        </section>
+      )}
 
       <section aria-labelledby="diger" className="mt-12">
         <h2 id="diger" className="text-xl font-bold">Diğer araçlar</h2>
