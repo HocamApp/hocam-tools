@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
-import Link from "next/link";
 
 import "./globals.css";
 // Statik import: basePath altında /brand/... yolunu next/image kendisi çözer.
 import logo from "../../public/brand/hocam-logo.png";
-import { SITE_URL, mainUrl } from "@/lib/site";
+import { SITE_URL, TOOLS_PATH, mainUrl } from "@/lib/site";
 
 /* latin-ext şart: ğ, ş, İ, ı yoksa sistem fontuna düşer ve kelime ortasında karışık glif görünür. */
 const poppins = Poppins({
@@ -57,9 +56,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               Hocam
             </a>
             <nav aria-label="Ana gezinme" className="flex items-center gap-5 text-base font-medium">
-              <Link href="/" className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">
+              {/* Plain <a>, not <Link>: behind the main site's proxy an RSC request for the hub
+                  404s on Vercel (it is routed as /araclar.rsc, which no rewrite can match), so
+                  next/link would prefetch a 404 on every page and fall back to a full load anyway. */}
+              <a href={TOOLS_PATH} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">
                 Araçlar
-              </Link>
+              </a>
               <a
                 href={mainUrl("/", "site-header")}
                 className="inline-flex min-h-11 items-center underline-offset-4 hover:underline"

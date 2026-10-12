@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { JsonLd } from "@/components/JsonLd";
-import { SITE_URL, mainUrl, toolsUrl } from "@/lib/site";
+import { SITE_URL, TOOLS_PATH, mainUrl, toolsUrl } from "@/lib/site";
 import { TOOLS, type Tool } from "@/lib/tools";
 
 export type Faq = { q: string; a: string };
@@ -63,7 +63,7 @@ export function ToolPage({ tool, lead, faq, article, children }: Props) {
           </li>
           <li aria-hidden="true">›</li>
           <li>
-            <Link href="/" className="underline">Araçlar</Link>
+            <a href={TOOLS_PATH} className="underline">Araçlar</a>
           </li>
           <li aria-hidden="true">›</li>
           <li aria-current="page">{tool.name}</li>
