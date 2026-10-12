@@ -7,7 +7,7 @@ import { TOOLS } from "@/lib/tools";
 
 const TITLE = "Ücretsiz YKS Araçları";
 const DESCRIPTION =
-  "TYT ve AYT net hesaplama, OBP hesaplama, hedef net planlayıcı: YKS'ye hazırlanırken işine yarayacak ücretsiz araçlar. Kayıt gerekmez.";
+  "YKS puan ve sıralama, TYT ve AYT net, OBP hesaplama, hedef net planlayıcı: YKS'ye hazırlanırken işine yarayacak ücretsiz araçlar. Kayıt gerekmez.";
 
 export const metadata: Metadata = {
   // Kök segmentte layout'taki title.template uygulanmaz; son ek elle eklenir.
