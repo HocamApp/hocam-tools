@@ -4,7 +4,7 @@ Free YKS micro tools served at `https://www.hocamozelders.com/araclar/*`. A sepa
 (App Router, Tailwind, no runtime deps beyond Next/React) that the main site proxies with one rewrite,
 so the tools share the main domain's SEO authority.
 
-Status: live at hocamozelders.com/araclar. One tool for now: YKS puan ve sıralama hesaplama (the earlier standalone TYT/AYT net, OBP and hedef-net tools were retired on 12 Oct 2026 and redirect to it).
+Status: live at hocamozelders.com/araclar. Tools: YKS puan ve sıralama, LGS sıralama, KPSS lisans puan (the earlier standalone TYT/AYT net, OBP and hedef-net tools were retired on 12 Oct 2026 and redirect to it).
 Agents and contributors: read `AI_AGENT_RULES.md` first (accuracy, privacy, SEO and PR rules; in Turkish like the sibling repos).
 
 ## Run
