@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { MAX_DIPLOMA, MIN_DIPLOMA, computeObp, formatScore, parseDiploma } from "@/lib/obp";
@@ -112,6 +113,11 @@ export function ObpCalculator() {
             <dt>Yerleştirme puanına katkı</dt>
             <dd className="text-right text-2xl font-bold">{formatScore(result.contribution)}</dd>
           </dl>
+          <p className="mt-3">
+            <Link href="/yks-puan-siralama-hesaplama" className="font-medium text-pink-deep underline">
+              Netlerinle birlikte puanını ve sıralamanı hesapla
+            </Link>
+          </p>
           {result.clamped && (
             <p className="mt-3 text-sm text-ink-mid">
               Diploma notu {MIN_DIPLOMA}&apos;nin altında olduğu için ÖSYM {MIN_DIPLOMA} olarak değerlendirir.

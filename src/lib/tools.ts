@@ -18,6 +18,15 @@ export type Tool = {
 
 export const TOOLS: Tool[] = [
   {
+    slug: "yks-puan-siralama-hesaplama",
+    name: "YKS Puan ve Sıralama Hesaplama",
+    metaTitle: "YKS Puan ve Sıralama Hesaplama (TYT + AYT + OBP)",
+    description:
+      "TYT, AYT netlerini ve diploma notunu gir; tahmini YKS puanını ve başarı sıranı ÖSYM verileriyle aralık olarak hesapla. Ücretsiz.",
+    blurb: "Net ve OBP'den tahmini puanını ve sıranı, ÖSYM verileriyle aralık olarak gör.",
+    updatedAt: "2026-10-12",
+  },
+  {
     slug: "tyt-net-hesaplama",
     name: "TYT Net Hesaplama",
     metaTitle: "TYT Net Hesaplama Aracı",

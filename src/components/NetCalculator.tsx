@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import {
@@ -160,6 +161,11 @@ export function NetCalculator({ exam, campaign }: Props) {
           <h2 id={`${exam}-sonuc`} className="text-xl font-bold">Sonuç</h2>
           <p className="mt-2 text-lg">
             Toplam net: <strong className="text-3xl">{formatNet(result.total)}</strong>
+          </p>
+          <p className="mt-2">
+            <Link href="/yks-puan-siralama-hesaplama" className="font-medium text-pink-deep underline">
+              Netini puana ve sıralamaya çevir
+            </Link>
           </p>
 
           <div className="mt-4 overflow-x-auto">
