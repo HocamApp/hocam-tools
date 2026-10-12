@@ -44,6 +44,15 @@ export const TOOLS: Tool[] = [
     blurb: "Diploma notundan OBP'ni ve puana katkısını hesapla.",
     updatedAt: "2026-10-10",
   },
+  {
+    slug: "hedef-net-planlayici",
+    name: "Hedef Net Planlayıcı",
+    metaTitle: "Hedef Net Planlayıcı: YKS Net Hedefi Aracı",
+    description:
+      "TYT veya AYT'de şimdiki ve hedef netini ders ders gir; hedefe ulaşmak için hangi derste kaç net artırman gerektiğini gör. Ücretsiz.",
+    blurb: "Hedef netine hangi derste ne kadar yaklaştığını ders ders gör.",
+    updatedAt: "2026-10-12",
+  },
 ];
 
 export function toolMetadata(tool: Tool): Metadata {
