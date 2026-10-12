@@ -26,42 +26,6 @@ export const TOOLS: Tool[] = [
     blurb: "Net ve OBP'den tahmini puanını ve sıranı, ÖSYM verileriyle aralık olarak gör.",
     updatedAt: "2026-10-12",
   },
-  {
-    slug: "tyt-net-hesaplama",
-    name: "TYT Net Hesaplama",
-    metaTitle: "TYT Net Hesaplama Aracı",
-    description:
-      "TYT'de doğru ve yanlış sayılarını gir, ders bazında ve toplam netini anında hesapla. Ücretsiz, kayıt gerektirmez.",
-    blurb: "Türkçe, Sosyal, Matematik ve Fen netini ders ders hesapla.",
-    updatedAt: "2026-10-10",
-  },
-  {
-    slug: "ayt-net-hesaplama",
-    name: "AYT Net Hesaplama",
-    metaTitle: "AYT Net Hesaplama Aracı",
-    description:
-      "Sayısal, Eşit Ağırlık veya Sözel alanını seç, AYT doğru ve yanlışlarını gir; ders bazında netini hesapla. Ücretsiz.",
-    blurb: "Alanını seç, AYT netini ders bazında gör.",
-    updatedAt: "2026-10-10",
-  },
-  {
-    slug: "obp-hesaplama",
-    name: "OBP Hesaplama",
-    metaTitle: "OBP Hesaplama Aracı",
-    description:
-      "Diploma notunu gir, OBP puanını ve YKS yerleştirme puanına katkısını hesapla. Kırık OBP durumunu da gösterir.",
-    blurb: "Diploma notundan OBP'ni ve puana katkısını hesapla.",
-    updatedAt: "2026-10-10",
-  },
-  {
-    slug: "hedef-net-planlayici",
-    name: "Hedef Net Planlayıcı",
-    metaTitle: "Hedef Net Planlayıcı: YKS Net Hedefi Aracı",
-    description:
-      "TYT veya AYT'de şimdiki ve hedef netini ders ders gir; hedefe ulaşmak için hangi derste kaç net artırman gerektiğini gör. Ücretsiz.",
-    blurb: "Hedef netine hangi derste ne kadar yaklaştığını ders ders gör.",
-    updatedAt: "2026-10-12",
-  },
 ];
 
 export function toolMetadata(tool: Tool): Metadata {

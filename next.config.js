@@ -8,6 +8,15 @@ const nextConfig = {
    */
   basePath: "/araclar",
   poweredByHeader: false,
+  /* Retired tools (only live for a day): send old links to the combined tool. Temporary (307) on
+     purpose, so nothing is cached as permanent if a tool comes back. basePath is added automatically. */
+  async redirects() {
+    return ["tyt-net-hesaplama", "ayt-net-hesaplama", "obp-hesaplama", "hedef-net-planlayici"].map((slug) => ({
+      source: `/${slug}`,
+      destination: "/yks-puan-siralama-hesaplama",
+      permanent: false,
+    }));
+  },
   async headers() {
     return [
       {

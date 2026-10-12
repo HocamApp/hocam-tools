@@ -4,7 +4,7 @@ Free YKS micro tools served at `https://www.hocamozelders.com/araclar/*`. A sepa
 (App Router, Tailwind, no runtime deps beyond Next/React) that the main site proxies with one rewrite,
 so the tools share the main domain's SEO authority.
 
-Status: Phase 1 on `main` (TYT/AYT net, OBP). Not deployed and not wired to the main site yet.
+Status: live at hocamozelders.com/araclar. One tool for now: YKS puan ve sıralama hesaplama (the earlier standalone TYT/AYT net, OBP and hedef-net tools were retired on 12 Oct 2026 and redirect to it).
 Agents and contributors: read `AI_AGENT_RULES.md` first (accuracy, privacy, SEO and PR rules; in Turkish like the sibling repos).
 
 ## Run
@@ -20,7 +20,7 @@ Everything lives under `basePath: "/araclar"`, so `/` alone is a 404 by design.
 
 ## Layout
 
-- `src/lib/net.ts`, `obp.ts`: formulas as pure functions, with tests next to them.
+- `src/lib/net.ts`, `obp.ts`, `puan.ts`: formulas as pure functions, with tests next to them (`puan.ts` uses ÖSYM tables in `osym-data.ts`).
 - `src/lib/tools.ts`: tool registry. Add a tool = add an entry + a `src/app/<slug>/page.tsx`; the hub and sitemap pick it up.
 - `src/components/ToolPage.tsx`: shared page template (breadcrumb, JSON-LD, FAQ, CTA, related tools).
 - Calculators are submit-based with the result region receiving focus; errors are inline and tied to inputs with `aria-describedby`.
