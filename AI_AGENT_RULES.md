@@ -17,6 +17,11 @@
 - Puan/sıralama tahmini, LGS, YKS geri sayımı ve bölüm bulucu araçları **veri kaynağı onaylanmadan
   eklenmez**. Yıllık veriye bağlı bir araç eklemek, o veriyi her yıl güncelleme sorumluluğunu da
   getirir; bunu PR açıklamasında belirt.
+- Bölüm bulucu (`/bolum-bulucu`) verisi: sahibin onayıyla kaynak ÖSYM Yükseköğretim Programları ve Kontenjanları
+  Kılavuzu Tablo 4'tür (2025 genel kontenjan en küçük puan ve başarı sırası). YÖK Atlas API'si kasıtlı olarak
+  kullanılmaz (otomatik erişimi engelliyor). Veri `scripts/parse_tablo4.py` ile (pdfplumber gerekir) üretilir ve
+  `src/lib/bolum-data/*.json` olarak commit edilir; her Temmuz yeni kılavuzla yenilenir. Betik üniversite/kod öneki
+  tutarlılığını doğrular, hata verirse veriyi elle düzeltme, ayrıştırıcıyı düzelt.
 - TYT/AYT soru dağılımı, net formülü ve OBP kuralları 10 Ekim 2026'da ÖSYM'nin 2026 belgelerinden
   (SSS ve TYT/AYT soru kitapçıkları) doğrulandı; kaynak bağlantıları `src/lib/net.ts` ve
   `src/lib/obp.ts` dosya başlarındadır. 2027-YKS Kılavuzu/SSS yayımlanınca yeniden kontrol edilir ve
