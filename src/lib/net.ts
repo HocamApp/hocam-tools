@@ -135,6 +135,27 @@ export function weakestSection(rows: SectionResult[]): SectionResult | null {
   return weakest;
 }
 
+/**
+ * Soru sayısı q olan bir testte gerçekten ulaşılabilir (doğru − yanlış/4, doğru + yanlış ≤ q) netlerden x'e en
+ * yakını. 4 yanlış 1 doğruyu götürdüğü için örneğin 14 soruda 13,5 net yoktur. Eşitlikte büyük olan seçilir
+ * (hedef net için ihtiyatlı taraf).
+ */
+export function nearestAchievableNet(x: number, q: number): number {
+  let best = 0;
+  let bestDist = Infinity;
+  for (let d = 0; d <= q; d++) {
+    for (let w = 0; w <= q - d; w++) {
+      const v = d - w / 4;
+      const dist = Math.abs(v - x);
+      if (dist < bestDist - 1e-9 || (Math.abs(dist - bestDist) < 1e-9 && v > best)) {
+        best = v;
+        bestDist = dist;
+      }
+    }
+  }
+  return best;
+}
+
 /** 37,25 gibi Türkçe ondalık; tam sayılar da iki hane gösterilir. */
 export function formatNet(value: number): string {
   return value.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
