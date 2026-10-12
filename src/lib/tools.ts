@@ -31,8 +31,8 @@ export const TOOLS: Tool[] = [
     name: "LGS Sıralama Hesaplama",
     metaTitle: "LGS Sıralama ve Yüzdelik Dilim Hesaplama",
     description:
-      "LGS puanını gir; yüzdelik dilimini ve sıranı MEB'in yayımladığı okul taban puanı verilerinden yaklaşık olarak gör. Ücretsiz, kayıt gerekmez.",
-    blurb: "LGS puanından yaklaşık yüzdelik dilimini ve sıranı gör.",
+      "Derslerdeki netlerini ya da LGS puanını gir; yaklaşık puanını, yüzdelik dilimini ve sıranı gör. Ücretsiz, kayıt gerekmez.",
+    blurb: "LGS netinden ya da puanından yaklaşık yüzdelik dilimini ve sıranı gör.",
     updatedAt: "2026-10-12",
   },
   {

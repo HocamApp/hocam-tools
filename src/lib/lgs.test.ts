@@ -41,3 +41,37 @@ test("destek aralığı altı ve geçersiz girdi", () => {
   assert.equal(parseLgsPuan("432,5"), 432.5);
   for (const bad of ["", "abc", "501", "99", "-4"]) assert.equal(parseLgsPuan(bad), null, bad);
 });
+
+import { LGS_SUBJECTS, lgsPuanFromNets, normInv, type LgsAnswer } from "./lgs";
+
+const answers = (fn: (q: number) => LgsAnswer) =>
+  Object.fromEntries(LGS_SUBJECTS.map((s) => [s.id, fn(s.questions)])) as Record<(typeof LGS_SUBJECTS)[number]["id"], LgsAnswer>;
+
+test("normInv bilinen değerler", () => {
+  assert.ok(Math.abs(normInv(0.5)) < 1e-9);
+  assert.ok(Math.abs(normInv(0.975) - 1.959964) < 1e-5);
+  assert.ok(Math.abs(normInv(0.01) + 2.326348) < 1e-5);
+});
+
+test("tüm sorular doğru → 500; hiç doğru yok → 100'e yakın ve düşük", () => {
+  assert.equal(lgsPuanFromNets(answers((q) => ({ correct: q, wrong: 0 }))), 500);
+  assert.ok(lgsPuanFromNets(answers(() => ({ correct: 0, wrong: 0 }))) < 200);
+});
+
+test("net arttıkça puan artar; boş bırakmak yanlıştan iyidir", () => {
+  const half = answers((q) => ({ correct: Math.round(q / 2), wrong: 0 }));
+  const less = answers((q) => ({ correct: Math.round(q / 4), wrong: 0 }));
+  assert.ok(lgsPuanFromNets(half) > lgsPuanFromNets(less));
+  const blank = answers((q) => ({ correct: Math.round(q / 2), wrong: 0 }));
+  const wrong = answers((q) => ({ correct: Math.round(q / 2), wrong: q - Math.round(q / 2) }));
+  assert.ok(lgsPuanFromNets(blank) > lgsPuanFromNets(wrong));
+});
+
+test("kontrol: eşit dağılımlı 50/60/70 net, üçüncü taraf tablosuna (357/393/429) 15 puan içinde", () => {
+  const equal = (total: number) =>
+    answers((q) => ({ correct: (q * total) / 90, wrong: 0 })); // net = doğru; kesirli doğru yalnızca test içindir
+  for (const [total, expected] of [[50, 357], [60, 393], [70, 429]] as const) {
+    const p = lgsPuanFromNets(equal(total));
+    assert.ok(Math.abs(p - expected) < 15, `${total} net: ${p} (beklenen ~${expected})`);
+  }
+});

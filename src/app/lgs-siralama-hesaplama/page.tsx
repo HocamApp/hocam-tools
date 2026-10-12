@@ -8,8 +8,8 @@ export const metadata = toolMetadata(tool);
 
 const FAQ: Faq[] = [
   {
-    q: "Netimi girerek sıramı hesaplayabilir miyim?",
-    a: "Hayır. LGS puanı, her yıl o sınavın ders bazındaki ortalama ve standart sapmasına göre hesaplanır; MEB bu değerleri ve puan dağılımını yayımlamaz. Bu yüzden net üzerinden puan ve sıra tahmini dürüstçe yapılamaz. Sonuç belgendeki puanı girerek yüzdelik diliminin ve sıranın yaklaşık karşılığını görebilirsin.",
+    q: "Netlerimle sıramı hesaplayabilir miyim?",
+    a: "Evet, ama yaklaşık olarak. LGS puanı her yıl o sınavın ders bazındaki ortalama ve standart sapmasına göre hesaplanır; MEB bu değerleri ve puan dağılımını yayımlamaz. Bu araç ders ortalama ve standart sapmalarını, MEB'in yayımladığı madde güçlüğü ve güvenirlik katsayılarından kestirir. Bu yüzden netlerinden bulunan puan yaklaşık ±10 puan sapabilir. Sonuç belgendeki puanı biliyorsan 'LGS puanımla' seçeneği daha doğru bir sıra verir.",
   },
   {
     q: "Bu hesaplama kesin mi?",
@@ -38,7 +38,7 @@ export default function Page() {
     <ToolPage
       tool={tool}
       showCta={false}
-      lead="LGS sonuç belgendeki puanı gir; yüzdelik dilimini ve sıranı MEB'in yayımladığı okul taban puanı verilerinden yaklaşık olarak gör."
+      lead="Derslerdeki doğru ve yanlış sayılarını ya da LGS puanını gir; tahmini puanını, yüzdelik dilimini ve sıranı yaklaşık olarak gör."
       faq={FAQ}
       article={
         <>
@@ -52,20 +52,30 @@ export default function Page() {
 
           <h2>LGS puanı nasıl hesaplanır?</h2>
           <p>
-            Ham puan, doğru sayısından yanlış sayısının üçte biri çıkarılarak bulunur. Her testin standart puanı
-            50 + 10 × (ham puan − ortalama) ÷ standart sapma formülüyle bulunur. Standart puanlar Türkçe,
-            Matematik ve Fen Bilimleri için 4, diğer üç ders için 1 katsayısıyla çarpılıp toplanır ve toplam,
-            en küçüğü 100 en büyüğü 500 olacak şekilde ölçeklenir (
+            Ham puan (net), doğru sayısından yanlış sayısının üçte biri çıkarılarak bulunur. Her testin standart puanı
+            50 + 10 × (ham puan − ortalama) ÷ standart sapma formülüyle bulunur. Standart puanlar Türkçe, Matematik ve
+            Fen Bilimleri için 4, diğer üç ders için 1 katsayısıyla çarpılıp toplanır ve toplam, en küçüğü 100 en büyüğü
+            500 olacak şekilde ölçeklenir (
             <a href="https://odsgm.meb.gov.tr/www/2026-lgs-kapsaminda-merkezi-sinav-raporu/icerik/1695/tr" rel="noopener">
               MEB 2026 Merkezî Sınav Raporu
             </a>
-            ). MEB testlerin ortalama ve standart sapmasını yayımlamadığı için bu araç net değil, puan alır.
+            ).
+          </p>
+
+          <h2>Netlerden puan neden yaklaşık?</h2>
+          <p>
+            MEB testlerin ortalama ve standart sapmasını yayımlamaz. Raporda ders başına madde sayısı, ortalama madde
+            güçlüğü (doğru oranı) ve güvenirlik katsayısı vardır. Bu araç, ortalamayı doğru oranından, standart sapmayı
+            güvenirlik katsayısından kestirir; en büyük puanı tüm soruları doğru yapan öğrenci (2026&apos;da 452 öğrenci 500
+            aldı) olarak alır; en küçük değeri ise 2025 yüzdelik dilim verilerine uydurur. Bu tahmin zinciri, üçüncü bir
+            sitenin 50, 60 ve 70 net için yayımladığı puanlara yaklaşık 5 puan içinde yaklaşıyor, ama MEB&apos;in resmî
+            değerleri değildir; hata payı yaklaşık ±10 puandır.
           </p>
 
           <h2>Sınırlar</h2>
           <ul>
             <li>Sonuç yaklaşıktır; resmî yüzdelik dilim MEB sonuç belgesindedir.</li>
-            <li>Veriler 2025 LGS&apos;ye aittir ve yaklaşık ilk %35&apos;lik dilimi kapsar.</li>
+            <li>Yüzdelik dilim ve sıra 2025 LGS verilerine dayanır ve yaklaşık ilk %35&apos;lik dilimi kapsar. Puan, 2026 raporundaki katsayılarla kestirilir; sınavların zorluğu farklı olabilir.</li>
             <li>Taban puanları okulların kendi yerleştirme sonuçlarıdır; her yıl değişir.</li>
           </ul>
         </>
