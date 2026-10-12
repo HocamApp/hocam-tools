@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   AYT_FIELDS,
+  nearestAchievableNet,
   TYT_SECTIONS,
   computeNet,
   formatNet,
@@ -69,4 +70,18 @@ test("formatNet Türkçe ondalık virgül kullanır", () => {
   assert.equal(formatNet(37.25), "37,25");
   assert.equal(formatNet(28), "28,00");
   assert.equal(formatNet(-1), "-1,00");
+});
+
+test("nearestAchievableNet: imkansız netler yerine ulaşılabilir en yakın", () => {
+  // 14 soruda 13 ile 14 arası net yoktur.
+  assert.equal(nearestAchievableNet(13.5, 14), 14);
+  assert.equal(nearestAchievableNet(13.2, 14), 13);
+  assert.equal(nearestAchievableNet(0, 20), 0);
+  assert.equal(nearestAchievableNet(9.25, 20), 9.25); // 10 doğru 3 yanlış
+  assert.equal(nearestAchievableNet(99, 40), 40); // soru sayısını aşmaz
+  // Dönen her değer gerçekten ulaşılabilir: 4·net tam sayı, doğru/yanlış toplamı q'yu geçmez.
+  for (const x of [3.1, 7.6, 12.9, 18.4]) {
+    const v = nearestAchievableNet(x, 20);
+    assert.equal(Number.isInteger(v * 4), true);
+  }
 });

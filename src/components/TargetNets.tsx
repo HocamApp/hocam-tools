@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
-import { AYT_FIELDS, TYT_SECTIONS, type AytField, type Section } from "@/lib/net";
+import { AYT_FIELDS, TYT_SECTIONS, nearestAchievableNet, type AytField, type Section } from "@/lib/net";
 import type { Scheme } from "@/lib/osym-data";
 import { AYT_KEYS, TYT_KEYS, YEARS, maxRank, netsForRank, type Nets } from "@/lib/puan";
 import { btnPrimary, inputCls, labelCls } from "@/lib/ui";
@@ -17,9 +17,6 @@ function parseRank(value: string): number | null {
   const v = value.replace(/[.\s]/g, "");
   return /^\d{1,7}$/.test(v) && Number(v) >= 1 ? Number(v) : null;
 }
-
-/** En yakın 0,5 net: sonuç zaten yaklaşıktır, çeyrek net kesinliği yanıltır. */
-const half = (x: number) => Math.round(x * 2) / 2;
 
 type Props = {
   mode: AytField | "tyt";
@@ -68,7 +65,8 @@ export function TargetNets({ mode, contribution }: Props) {
   const aytSections: Section[] = mode === "tyt" ? [] : AYT_FIELDS[mode].sections;
   const row = (s: Section, map: Record<string, keyof Nets>) => ({
     label: s.label,
-    net: half(result!.nets[map[s.id]] ?? 0),
+    // Gerçekte ulaşılabilir en yakın net (4 yanlış 1 doğruyu götürür; 14 soruda 13,5 net olmaz).
+    net: nearestAchievableNet(result!.nets[map[s.id]] ?? 0, s.questions),
   });
   const tytRows = result ? TYT_SECTIONS.map((s) => row(s, TYT_KEYS)) : [];
   const aytRows = result ? aytSections.map((s) => row(s, AYT_KEYS)) : [];
