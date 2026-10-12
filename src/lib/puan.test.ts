@@ -100,3 +100,37 @@ test("puan hesaplama koşulları ve sıra yuvarlama", () => {
   assert.equal(roundRank(342), 340);
   assert.equal(roundRank(42), 40);
 });
+
+import { maxRank, netsForRank, puanAtRank } from "./puan";
+
+test("puanAtRank, rankAt'in tersidir", () => {
+  const rows = CUM_2026.exam.tyt;
+  for (const p of [220, 310, 405, 470]) assert.ok(Math.abs(puanAtRank(rows, rankAt(rows, p)) - p) < 0.01);
+});
+
+test("hedef sıra → net → sıra gidiş-dönüş tutarlı (her puan türü, iki yıl)", () => {
+  for (const scheme of ["tyt", "say", "ea", "soz"] as const) {
+    for (const year of YEARS) {
+      for (const target of [10_000, 50_000, 200_000]) {
+        if (target > maxRank(scheme)) continue;
+        const { nets, fraction } = netsForRank(scheme, year, target, null);
+        if (fraction <= 0 || fraction >= 1) continue; // sınırlarda tutmaz (net yetmez / gerekmez)
+        const back = computeScheme(scheme, nets, year, null).examRank.mid;
+        assert.ok(Math.abs(back - target) / target < 0.03, `${scheme} ${year} ${target}: ${back}`);
+      }
+    }
+  }
+});
+
+test("daha iyi sıra → daha çok net; OBP katkısı yüksekse daha az net yeter", () => {
+  const a = netsForRank("say", 2026, 100_000, null);
+  const b = netsForRank("say", 2026, 10_000, null);
+  assert.ok(b.fraction > a.fraction);
+  assert.ok(netsForRank("say", 2026, 100_000, 60).fraction < netsForRank("say", 2026, 100_000, 30).fraction);
+});
+
+test("netler soru sayısını aşmaz", () => {
+  const { nets } = netsForRank("say", 2026, 1, null);
+  assert.ok((nets.amat ?? 0) <= 39 && (nets.tde ?? 0) === 0);
+  assert.ok((nets.mat ?? 0) <= 40);
+});

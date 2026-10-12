@@ -208,3 +208,80 @@ export const AYT_KEYS: Record<string, TestKey> = {
   kimya: "kim",
   biyoloji: "bio",
 };
+
+/** Ters rankAt: "p ve üstü" sayısı `rank` olan puan (ikili arama; rankAt puan arttıkça azalır). */
+export function puanAtRank(rows: Row[], rank: number): number {
+  let lo = 100;
+  let hi = 560;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (rankAt(rows, mid) > rank) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+/** Bu puan türünde sıralanabilecek en kötü sıra (iki yılın tablosundan küçüğü). */
+export function maxRank(scheme: Scheme): number {
+  return Math.min(...YEARS.map((y) => DATA[y].cum.exam[scheme].reduce((m, r) => Math.max(m, r[1]), 0)));
+}
+
+export type TargetNets = {
+  nets: Nets;
+  /** Eşit doluluk profilindeki başarı oranı (0-1); 0 ise sıra en düşük netle bile tutar, 1 ise tam net bile yetmez. */
+  fraction: number;
+};
+
+/**
+ * Hedef puan için "ortalama" net profili. Aynı puana giden sonsuz net kombinasyonu var; iki dengeli profilin
+ * ortalaması alınır, ikisi de hedef ağırlıklı puana (A) ulaşır (A netlerde doğrusaldır, ortalama da ulaşır):
+ * - eşit doluluk: her testte net = f·geçerli soru (üst sıralarda gerçeğe yakın, AYT'yi orta sıralarda şişirir),
+ * - eşit z: her testte net = ortalama + z·SS, [0, soru] ile sınırlı (orta sıralarda AYT'ye gerçekçi, Türkçe'yi
+ *   üst sıralarda şişirir).
+ * ponytail: gerçek adayların ders dağılımı dengeli değildir; ortak dağılım verisi yok, bu yüzden basit ortalama.
+ */
+export function netsForPuan(scheme: Scheme, year: Year, targetPuan: number): TargetNets {
+  const stats = DATA[year].stats;
+  const scale = calibrate(scheme, year);
+  const aTarget = scale.aMin + ((targetPuan - 100) / 400) * (scale.aMax - scale.aMin);
+  const keys = Object.keys(flatWeights(scheme)) as TestKey[];
+  const solve = (profile: (x: number) => Nets, from: number, to: number) => {
+    let lo = from;
+    let hi = to;
+    for (let i = 0; i < 50; i++) {
+      const mid = (lo + hi) / 2;
+      if (weightedScore(scheme, profile(mid), year) < aTarget) lo = mid;
+      else hi = mid;
+    }
+    return (lo + hi) / 2;
+  };
+  const byFraction = (f: number): Nets => {
+    const out: Nets = {};
+    for (const k of keys) out[k] = f * stats[k][0];
+    return out;
+  };
+  const byZ = (z: number): Nets => {
+    const out: Nets = {};
+    for (const k of keys) out[k] = Math.min(stats[k][0], Math.max(0, stats[k][1] + z * stats[k][2]));
+    return out;
+  };
+  const fraction = solve(byFraction, 0, 1);
+  const pf = byFraction(fraction);
+  const pz = byZ(solve(byZ, -6, 12));
+  const nets: Nets = {};
+  for (const k of keys) nets[k] = ((pf[k] ?? 0) + (pz[k] ?? 0)) / 2;
+  return { nets, fraction };
+}
+
+/** Hedef sıra → gereken net profili. OBP katkısı verilirse sıra yerleştirme puanına göre, yoksa sınav puanına göre. */
+export function netsForRank(
+  scheme: Scheme,
+  year: Year,
+  rank: number,
+  obpContribution: number | null,
+): TargetNets {
+  const cum = DATA[year].cum;
+  const p = puanAtRank(obpContribution === null ? cum.exam[scheme] : cum.placement[scheme], rank);
+  const examPuan = Math.min(500, Math.max(100, p - (obpContribution ?? 0)));
+  return netsForPuan(scheme, year, examPuan);
+}

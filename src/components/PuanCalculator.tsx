@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { MAX_DIPLOMA, computeObp, parseDiploma } from "@/lib/obp";
+import { TargetNets } from "@/components/TargetNets";
 import {
   AYT_KEYS,
   TYT_KEYS,
@@ -74,6 +75,8 @@ export function PuanCalculator() {
   const resultRef = useRef<HTMLElement>(null);
 
   const aytSections: Section[] = mode === "tyt" ? [] : AYT_FIELDS[mode].sections;
+  const parsedDiploma = diploma.trim() === "" ? null : parseDiploma(diploma);
+  const targetContribution = parsedDiploma === null ? null : computeObp(parsedDiploma, placed).contribution;
   const tytLive = computeNet(TYT_SECTIONS, tytAns);
   const aytLive = computeNet(aytSections, aytAns);
 
@@ -193,29 +196,32 @@ export function PuanCalculator() {
 
   return (
     <div>
+      <fieldset>
+        <legend className="text-base font-bold">Alanın</legend>
+        <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+          {MODES.map((m) => (
+            <label key={m.id} className="flex min-h-11 items-center gap-2 text-base">
+              <input
+                type="radio"
+                name="alan"
+                value={m.id}
+                checked={mode === m.id}
+                onChange={() => {
+                  setMode(m.id);
+                  setAytAns({});
+                  changed();
+                }}
+                className="h-5 w-5 accent-pink-deep"
+              />
+              {m.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <TargetNets mode={mode} contribution={targetContribution} />
+
       <form onSubmit={onSubmit} noValidate aria-label="YKS puan ve sıralama hesaplama">
-        <fieldset>
-          <legend className="text-base font-bold">Alanın</legend>
-          <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
-            {MODES.map((m) => (
-              <label key={m.id} className="flex min-h-11 items-center gap-2 text-base">
-                <input
-                  type="radio"
-                  name="alan"
-                  value={m.id}
-                  checked={mode === m.id}
-                  onChange={() => {
-                    setMode(m.id);
-                    setAytAns({});
-                    changed();
-                  }}
-                  className="h-5 w-5 accent-pink-deep"
-                />
-                {m.label}
-              </label>
-            ))}
-          </div>
-        </fieldset>
 
         {fieldset("t", "TYT netlerin", TYT_SECTIONS, tytLive, tytAns, setTytAns)}
         {mode !== "tyt" &&
