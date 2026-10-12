@@ -24,7 +24,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: "Hocam",
-  title: { default: "Ücretsiz YKS Araçları | Hocam", template: "%s | Hocam" },
+  title: { default: "Ücretsiz Sınav Araçları | Hocam", template: "%s | Hocam" },
   icons: { icon: [{ url: `${SITE_URL}/brand/hocam-logo.png`, type: "image/png" }] },
 };
 

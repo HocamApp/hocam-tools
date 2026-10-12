@@ -5,9 +5,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { SITE_URL, toolsUrl } from "@/lib/site";
 import { TOOLS } from "@/lib/tools";
 
-const TITLE = "Ücretsiz YKS Araçları";
+const TITLE = "Ücretsiz Sınav Araçları";
 const DESCRIPTION =
-  "YKS puan ve sıralama hesaplama: net ve OBP'den tahmini puanını ve sıranı ÖSYM verileriyle gör. Ücretsiz, kayıt gerekmez.";
+  "YKS puan ve sıralama, LGS sıralama ve KPSS puan hesaplama: resmî verilerle yaklaşık sonucunu gör. Ücretsiz, kayıt gerekmez.";
 
 export const metadata: Metadata = {
   // Kök segmentte layout'taki title.template uygulanmaz; son ek elle eklenir.
@@ -41,7 +41,7 @@ export default function ToolsHub() {
       />
       <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{TITLE}</h1>
       <p className="mt-3 max-w-2xl text-lg text-ink-mid">
-        YKS hazırlığında en çok aranan hesaplamalar, tek yerde. Hepsi ücretsiz; kayıt gerekmez ve
+        YKS, LGS ve KPSS için en çok aranan hesaplamalar, tek yerde. Hepsi ücretsiz; kayıt gerekmez ve
         girdiğin bilgiler cihazından çıkmaz.
       </p>
 
