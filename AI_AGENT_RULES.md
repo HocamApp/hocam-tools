@@ -2,7 +2,7 @@
 
 > Bu dosya, bu repoda çalışan herhangi bir AI kodlama ajanının (Claude Code, Codex, Cursor,
 > vb.) **ilk okuması gereken dosyadır**. Repo, `hocamozelders.com/araclar` altında yayınlanacak
-> ücretsiz YKS araçlarını içerir (şimdilik TYT/AYT net ve OBP). `hocam-frontend` ve
+> ücretsiz YKS araçlarını içerir (şimdilik tek araç: YKS puan ve sıralama hesaplama; KPSS ve LGS sıra hesaplama planlı). `hocam-frontend` ve
 > `hocam-backend` repolarının `AI_AGENT_RULES.md` dosyaları yalnız o repoları bağlar; bu dosya
 > yalnız bu repoyu. Çelişki olursa **bu dosya** README'nin üstündedir.
 
