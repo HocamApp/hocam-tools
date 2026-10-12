@@ -22,8 +22,8 @@ export const TOOLS: Tool[] = [
     name: "YKS Puan ve Sıralama Hesaplama",
     metaTitle: "YKS Puan ve Sıralama Hesaplama (TYT + AYT + OBP)",
     description:
-      "TYT, AYT netlerini ve diploma notunu gir; tahmini YKS puanını ve başarı sıranı ÖSYM verileriyle aralık olarak hesapla. Ücretsiz.",
-    blurb: "Net ve OBP'den tahmini puanını ve sıranı, ÖSYM verileriyle aralık olarak gör.",
+      "TYT, AYT netlerini ve diploma notunu gir; tahmini YKS puanını ve başarı sıranı ÖSYM verileriyle yaklaşık olarak hesapla. Ücretsiz.",
+    blurb: "Net ve OBP'den tahmini puanını ve sıranı, ÖSYM verileriyle yaklaşık olarak gör.",
     updatedAt: "2026-10-12",
   },
   {
