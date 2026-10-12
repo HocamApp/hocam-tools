@@ -7,7 +7,7 @@ import { TOOLS } from "@/lib/tools";
 
 const TITLE = "Ücretsiz Sınav Araçları";
 const DESCRIPTION =
-  "YKS puan ve sıralama hesaplama: net ve OBP'den tahmini puanını ve sıranı ÖSYM verileriyle gör. Ücretsiz, kayıt gerekmez.";
+  "YKS puan ve sıralama, LGS sıralama ve KPSS puan hesaplama: resmî verilerle yaklaşık sonucunu gör. Ücretsiz, kayıt gerekmez.";
 
 export const metadata: Metadata = {
   // Kök segmentte layout'taki title.template uygulanmaz; son ek elle eklenir.
