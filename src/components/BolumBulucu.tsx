@@ -27,9 +27,10 @@ const BAND_TEXT: Record<Band, { title: string; hint: string }> = {
   zor: { title: "Zor ama olabilir", hint: "Sıran taban sırasının biraz gerisinde; ancak kontenjan veya talep düşerse girebilirsin." },
 };
 
-type Result = { tur: Tur; sira: number; scaled: number; scale: number; matches: Matches; total: number };
+type Result = { tur: Tur; sira: number; scaled: number; scale: number; matches: Matches; total: number; yillar: number[] };
 
-function ProgramCard({ p }: { p: Program }) {
+function ProgramCard({ p, yillar }: { p: Program; yillar: number[] }) {
+  const gecmis = yillar.map((y, i) => ({ y, h: p.gecmis[i] })).filter((x) => x.h);
   return (
     <li className="rounded-xl border border-line bg-surface p-4">
       <p className="font-bold text-ink">{p.ad}</p>
@@ -54,6 +55,12 @@ function ProgramCard({ p }: { p: Program }) {
           <dd className="font-bold">{p.sure} yıl</dd>
         </div>
       </dl>
+      {gecmis.length > 0 && (
+        <p className="mt-2 text-sm text-ink-mid">
+          Önceki yıllar, taban sırası:{" "}
+          {gecmis.map(({ y, h }) => `${y}: ${nf.format(h![0])}`).join(" · ")}
+        </p>
+      )}
     </li>
   );
 }
@@ -85,12 +92,12 @@ export function BolumBulucu() {
     setError(null);
     setLoading(true);
     try {
-      const { programs } = await loadDataset(tur);
+      const { programs, gecmisYillar } = await loadDataset(tur);
       const scale = poolScale(tur);
       const scaled = n * scale;
       const matches = matchPrograms(programs, scaled, { query, uniTur });
       setShown({ rahat: PAGE, sinirda: PAGE, zor: PAGE });
-      setResult({ tur, sira: n, scaled, scale, matches, total: programs.length });
+      setResult({ tur, sira: n, scaled, scale, matches, total: programs.length, yillar: gecmisYillar });
     } catch {
       setError("Bölüm verisi yüklenemedi. Sayfayı yenileyip tekrar dene.");
       setResult(null);
@@ -244,7 +251,7 @@ export function BolumBulucu() {
                 <p className="mt-1 max-w-2xl text-sm text-ink-mid">{BAND_TEXT[b].hint}</p>
                 <ul className="mt-3 flex max-w-3xl flex-col gap-3">
                   {list.slice(0, shown[b]).map((p) => (
-                    <ProgramCard key={p.kod} p={p} />
+                    <ProgramCard key={p.kod} p={p} yillar={result.yillar} />
                   ))}
                 </ul>
                 {list.length > shown[b] && (

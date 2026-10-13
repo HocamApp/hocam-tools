@@ -2,8 +2,9 @@
  * Sıralamadan bölüm bulma: kullanıcının sıralamasını, lisans programlarının 2025 genel kontenjan en küçük
  * başarı sırasıyla karşılaştırır.
  *
- * Veri: ÖSYM 2026-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu, Tablo 4 (bolum-data/*.json;
- * kaynak ve üretim tarihi her dosyanın "meta" alanında, üretici: scripts/parse_tablo4.py).
+ * Veri: ÖSYM Yükseköğretim Programları ve Kontenjanları Kılavuzları (2023-2026), Tablo 4 (bolum-data/*.json;
+ * kaynaklar ve üretim tarihi her dosyanın "meta" alanında, üretici: scripts/parse_tablo4.py). Eşleştirme en yeni
+ * yılı (2025) kullanır; önceki yıllar kartta bilgi olarak gösterilir.
  *
  * Ölçek: aday havuzu yıldan yıla değişir (SAY 2025: 1.291.531, 2026: 1.135.718 aday), bu yüzden 2026
  * sıralaması 2025 ölçeğine çevrilir: sıra × (2025 havuzu ÷ 2026 havuzu). Havuz, ÖSYM'nin yerleştirme
@@ -25,6 +26,8 @@ export type Program = {
   kont: number;
   sira: number;
   puan: number;
+  /** Önceki yılların [taban sırası, taban puanı] değerleri (Dataset.gecmisYillar sırasıyla); program o yıl yoksa null. */
+  gecmis: ([number, number] | null)[];
 };
 
 export type Band = "rahat" | "sinirda" | "zor";
@@ -104,15 +107,15 @@ export function matchPrograms(programs: Program[], rank: number, { query = "", u
 }
 
 type Raw = {
-  meta: { yil: number; kaynak: string; url: string; uretim: string };
+  meta: { yil: number; gecmisYillar: number[]; kaynaklar: { yil: number; ad: string; url: string; arsiv?: string }[]; uretim: string };
   unis: [string, string][];
-  rows: [string, number, string, number, number, number, number][];
+  rows: [string, number, string, number, number, number, number, ([number, number] | null)[]][];
 };
 
-export type Dataset = { programs: Program[]; yil: number; kaynak: string; url: string };
+export type Dataset = { programs: Program[]; yil: number; gecmisYillar: number[]; kaynaklar: Raw["meta"]["kaynaklar"] };
 
 export function toDataset(raw: Raw): Dataset {
-  const programs = raw.rows.map(([kod, u, ad, sure, kont, sira, puan]) => ({
+  const programs = raw.rows.map(([kod, u, ad, sure, kont, sira, puan, gecmis]) => ({
     kod,
     uni: raw.unis[u][0],
     uniTur: raw.unis[u][1],
@@ -121,8 +124,9 @@ export function toDataset(raw: Raw): Dataset {
     kont,
     sira,
     puan,
+    gecmis,
   }));
-  return { programs, yil: raw.meta.yil, kaynak: raw.meta.kaynak, url: raw.meta.url };
+  return { programs, yil: raw.meta.yil, gecmisYillar: raw.meta.gecmisYillar, kaynaklar: raw.meta.kaynaklar };
 }
 
 /** Puan türünün verisini ayrı parça olarak yükler (yalnız seçilen tür indirilir). */

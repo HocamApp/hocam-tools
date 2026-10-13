@@ -16,8 +16,8 @@ const FAQ: Faq[] = [
     a: "Bir programın genel kontenjanına geçen yıl yerleşen son adayın başarı sırasıdır. Sırası bu değerden daha iyi olan aday programa girmiş olurdu. Kontenjan, tercih sayısı ve aday havuzu her yıl değiştiği için bu bir garanti değil, bir referanstır.",
   },
   {
-    q: "Neden 2025 verisi kullanılıyor?",
-    a: "ÖSYM programlar bazında taban sırasını bir sonraki yılın Yükseköğretim Programları ve Kontenjanları Kılavuzu'nda yayımlar. 2026 yerleştirme sonuçlarının program bazındaki sırası, 2027 kılavuzuyla gelir. Yayımlandığında araç güncellenir. Güncel 2026 değerlerini YÖK Atlas'ta da görebilirsin.",
+    q: "Neden 2025 verisi kullanılıyor, önceki yıllar nereden geliyor?",
+    a: "ÖSYM programlar bazında taban sırasını bir sonraki yılın Yükseköğretim Programları ve Kontenjanları Kılavuzu'nda yayımlar. 2026 yerleştirme sonuçlarının program bazındaki sırası 2027 kılavuzuyla gelir; yayımlandığında araç güncellenir. Güncel 2026 değerlerini YÖK Atlas'ta da görebilirsin. Önceki yıllar (2024, 2023, 2022) ÖSYM'nin 2025, 2024 ve 2023 kılavuzlarından alınır ve program koduna göre eşleştirilir; programın o yıl puan türü farklıysa veya program yoksa o yıl gösterilmez.",
   },
   {
     q: "Sıram neden 2025 ölçeğine çevriliyor?",
@@ -61,7 +61,7 @@ export default function Page() {
 
           <h2>Sınırlar</h2>
           <ul>
-            <li>Veriler 2025 yerleştirme sonuçlarıdır. Bu yılın taban sıraları farklı olabilir.</li>
+            <li>Eşleştirme 2025 yerleştirme sonuçlarına göre yapılır; bu yılın taban sıraları farklı olabilir. Önceki yıllar yalnızca bilgi içindir.</li>
             <li>Gruplar bir sezgidir. Tercih yapmadan önce YÖK Atlas&apos;taki güncel verilere ve programların kendi duyurularına bak.</li>
             <li>Özel kontenjanlar ve ek puanlar hesaba katılmaz; yalnızca genel kontenjan sırası kullanılır.</li>
             <li>Sonuçlar bilgilendirme amaçlıdır. Tercih ve yerleştirme işlemleri ÖSYM kılavuzundaki hükümlere tabidir.</li>
