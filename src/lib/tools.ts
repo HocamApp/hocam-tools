@@ -42,7 +42,7 @@ export const TOOLS: Tool[] = [
     description:
       "YKS sıralamanı gir; ÖSYM'nin 2025 taban sıralarına göre hangi 4 yıllık bölümlere girebileceğini, hangilerinin sınırda olduğunu gör. Ücretsiz.",
     blurb: "Sıralamanla hangi lisans bölümlerine girebileceğini 2025 taban sıralarıyla gör.",
-    updatedAt: "2026-10-12",
+    updatedAt: "2026-10-13",
   },
 ];
 

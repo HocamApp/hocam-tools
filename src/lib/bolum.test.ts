@@ -5,7 +5,7 @@ import test from "node:test";
 import { BAND_LIMITS, bandOf, fold, matchPrograms, parseSira, poolScale, toDataset, type Program, TURLER } from "./bolum";
 
 const P = (kod: string, ad: string, sira: number, uni = "Örnek Üniversitesi", uniTur = "Devlet"): Program => ({
-  kod, uni, uniTur, ad, sure: 4, kont: 10, sira, puan: 300,
+  kod, uni, uniTur, ad, sure: 4, kont: 10, sira, puan: 300, gecmis: [],
 });
 
 test("parseSira: nokta/boşluk ayracı, sınırlar ve geçersiz girdi", () => {
@@ -65,9 +65,12 @@ for (const tur of TURLER) {
     const raw = JSON.parse(readFileSync(new URL(`./bolum-data/${file}.json`, import.meta.url), "utf8"));
     assert.equal(raw.meta.tur, tur);
     assert.equal(raw.meta.yil, 2025);
-    assert.match(raw.meta.url, /^https:\/\/cdn\.osym\.gov\.tr\//);
-    const { programs } = toDataset(raw);
+    assert.deepEqual(raw.meta.gecmisYillar, [2024, 2023, 2022]);
+    assert.deepEqual(raw.meta.kaynaklar.map((k: { yil: number }) => k.yil), [2025, 2024, 2023, 2022]);
+    for (const k of raw.meta.kaynaklar) assert.match(k.url, /^https:\/\/(cdn|dokuman)\.osym\.gov\.tr\//);
+    const { programs, gecmisYillar } = toDataset(raw);
     assert.equal(programs.length, raw.meta.programlar);
+    assert.equal(gecmisYillar.length, 3);
     assert.ok(programs.length > 400);
     const codes = new Set<string>();
     let prev = 0;
@@ -82,7 +85,11 @@ for (const tur of TURLER) {
       assert.ok(["Devlet", "Vakıf"].includes(p.uniTur));
       assert.ok(p.puan > 100 && p.puan <= 560, `${p.kod} puan ${p.puan}`);
       assert.ok(p.sure >= 3 && p.sure <= 6);
+      assert.equal(p.gecmis.length, 3);
+      for (const h of p.gecmis) assert.ok(h === null || (h[0] >= 1 && h[0] <= 3_000_000 && h[1] > 100 && h[1] <= 560), `${p.kod} geçmiş ${h}`);
     }
+    // eşleşme çalışıyor: programların çoğunun en az bir önceki yılı var
+    assert.ok(programs.filter((p) => p.gecmis.some(Boolean)).length > programs.length * 0.5, "geçmiş eşleşmesi çok düşük");
     // sıra arttıkça (kötüleştikçe) puan düşer: en iyi %10 ortalaması > en kötü %10 ortalaması
     const n = Math.floor(programs.length / 10);
     const mean = (xs: Program[]) => xs.reduce((s, p) => s + p.puan, 0) / xs.length;
@@ -98,4 +105,6 @@ test("veri: bilinen satır (ÖSYM 2026 Kılavuzu Tablo 4, Abdullah Gül Bilgisay
   assert.equal(p.puan, 442.53227);
   assert.equal(p.uni, "Abdullah Gül Üniversitesi (Kayseri)");
   assert.equal(p.ad, "Bilgisayar Mühendisliği (İngilizce)");
+  // 2025 kılavuzu Tablo 4: 2024 sırası 46890, puanı 439.02957
+  assert.deepEqual(p.gecmis[0], [46890, 439.02957]);
 });

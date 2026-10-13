@@ -1,62 +1,106 @@
-"""ÖSYM Yükseköğretim Programları ve Kontenjanları Kılavuzu, Tablo 4 (lisans) -> JSON.
+"""ÖSYM Yükseköğretim Programları ve Kontenjanları Kılavuzları, Tablo 4 (lisans) -> bolum-data/*.json.
 
 Geliştirici aracı; çalışma zamanında kullanılmaz. Gerekli: pip install pdfplumber.
-Kullanım: python scripts/parse_tablo4.py kilavuz.pdf src/lib/bolum-data
-Kılavuzda sayfa üzerine bindirilmiş Helvetica damga yazısı vardır; yalnız Calibri karakterler okunur.
+
+Her kılavuzun Tablo 4'ü bir önceki yılın genel kontenjan en küçük başarı sırasını ve puanını verir
+(2026 kılavuzu -> 2025 verisi). Dört kılavuz birleştirilerek program başına dört yıl çıkar.
+
+  python scripts/parse_tablo4.py parse kilavuz.pdf ILK_SAYFA SON_SAYFA ham.json
+      Tek kılavuzu ayrıştırır (sayfa numaraları 1'den; yalnız "TABLO-4." başlıklı sayfalar okunur). Yaklaşık 4-6 dk.
+  python scripts/parse_tablo4.py build src/lib/bolum-data 2026=ham26.json 2025=ham25.json 2024=ham24.json 2023=ham23.json
+      Ham dosyaları birleştirir; ilk anahtar (en yeni kılavuz) program listesini ve 2026 kontenjanını belirler.
+
+Sayfa üzerine bindirilmiş damga yazısı büyük (>20 pt) Helvetica'dır; yalnız gövde boyutundaki karakterler okunur.
+Sınırlar: bkz. AI_AGENT_RULES.md §1 (bölüm bulucu verisi).
 """
-import json, re, sys
-import pdfplumber
+import datetime
+import json
+import os
+import re
+import sys
 
 CODE = re.compile(r"^\d{9}$")
 NUM = re.compile(r"^\d+$")
 PUAN = re.compile(r"^\d{2,3}\.\d+$")
-FIRST, LAST = 147, 550  # Tablo 4 sayfa aralığı (2026 kılavuzu; başka yıl için değiştir)
+HEADING = re.compile(r"fakültesi|yüksekokulu|enstitüsü|konservatuvarı", re.IGNORECASE)
+TURLER = ("SAY", "EA", "SÖZ", "DİL")
+
+# Kılavuz yılı -> kaynak. "url": ÖSYM'nin kendi adresi; "arsiv": ÖSYM dosyasını kaldırdığı için kullanılan Internet Archive kopyası.
+GUIDES = {
+    2026: {
+        "ad": "2026-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu (21 Temmuz 2026)",
+        "url": "https://cdn.osym.gov.tr/pdfdokuman/2026/YKS/TERCIH/kontkilavuz_yktd21072026.pdf",
+    },
+    2025: {
+        "ad": "2025-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu (1 Ağustos 2025)",
+        "url": "https://dokuman.osym.gov.tr/pdfdokuman/2025/YKS/TERC%C4%B0H/tkilavuz_01082025.pdf",
+        "arsiv": "https://web.archive.org/web/20250804165408/https://dokuman.osym.gov.tr/pdfdokuman/2025/YKS/TERC%C4%B0H/tkilavuz_01082025.pdf",
+    },
+    2024: {
+        "ad": "2024-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu (25 Temmuz 2024)",
+        "url": "https://dokuman.osym.gov.tr/pdfdokuman/2024/YKS/TERCIH/tkilavuz_25072024d.pdf",
+        "arsiv": "https://web.archive.org/web/20240726055749/https://dokuman.osym.gov.tr/pdfdokuman/2024/YKS/TERCIH/tkilavuz_25072024d.pdf",
+    },
+    2023: {
+        "ad": "2023-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu (27 Temmuz 2023)",
+        "url": "https://dokuman.osym.gov.tr/pdfdokuman/2023/YKS/TERCIH/kkilavuz27072023di.pdf",
+        "arsiv": "https://web.archive.org/web/20230731100125/https://dokuman.osym.gov.tr/pdfdokuman/2023/YKS/TERCIH/kkilavuz27072023di.pdf",
+    },
+}
 
 
-def is_data_page(text):
-    return "TABLO-4." in text[:200]
+def header_info(words):
+    """Başlıktaki (n) sütun numaralarının x aralıkları, sıra/puan sütun numaraları ve başlığın alt sınırı."""
+    nums = [(w, int(re.fullmatch(r"\((\d+)\)", w["text"]).group(1))) for w in words if re.fullmatch(r"\((\d+)\)", w["text"]) and w["top"] < 70]
+    cols = {n: (w["x0"], w["x1"]) for w, n in nums}
+
+    def after(label):
+        """label kelimesinin hemen sağındaki (n) numarası."""
+        for lw in (w for w in words if w["top"] < 70 and w["text"] == label):
+            cand = [(w["x0"], n) for w, n in nums if abs(w["top"] - lw["top"]) < 3 and w["x0"] > lw["x1"] - 1]
+            if cand:
+                return min(cand)[1]
+        return None
+
+    sira_n = after("SIRASI")
+    puan_n = after("PUANI") or after("PUAN")
+    bottom = max((w["bottom"] for w, _ in nums), default=0) + 1
+    return cols, sira_n, puan_n, bottom
 
 
-def header_cols(words):
-    """Başlık satırındaki (3)..(12) numaralarından sütun x aralıkları."""
-    pos = {}
-    for w in words:
-        m = re.fullmatch(r"\((\d+)\)", w["text"])
-        if m and w["top"] < 70:
-            pos[int(m.group(1))] = (w["x0"], w["x1"])
-    return pos
+def parse(path, first, last):
+    import pdfplumber
 
-
-def parse(path):
     out, uni, fak = [], None, None
-    caps = []  # son satırdan beri biriken BÜYÜK HARFLİ başlık satırları; üniversite adı birkaç satıra bölünebilir
+    caps = []  # son satırdan beri biriken başlık satırları; üniversite adı birkaç satıra bölünebilir
     with pdfplumber.open(path) as pdf:
-        for pi, page in enumerate(pdf.pages[FIRST:LAST]):
-            raw = page.extract_text() or ""
-            if not is_data_page(raw):
+        for pi in range(first - 1, last):
+            page = pdf.pages[pi]
+            if "TABLO-4." not in (page.extract_text() or "")[:300]:
                 continue
-            pg = page.filter(lambda o: o.get("object_type") != "char" or "Calibri" in o.get("fontname", ""))
+            pg = page.filter(lambda o: o.get("object_type") != "char" or o["size"] <= 20)
             words = pg.extract_words()
-            cols = header_cols(words)
-            if not {3, 4, 5, 11, 12} <= set(cols):
-                print(f"page {pi+1+FIRST}: header not found", file=sys.stderr)
+            cols, sira_n, puan_n, bottom = header_info(words)
+            if not ({3, 4, 5} <= set(cols) and sira_n in cols and puan_n in cols):
+                print(f"sayfa {pi + 1}: başlık çözülemedi", file=sys.stderr)
                 continue
             x_name_max = cols[3][0] - 4
+            sc, pc = cols[sira_n], cols[puan_n]
             lines = {}
             for w in words:
-                if w["top"] < 58:
-                    continue
-                lines.setdefault(round(w["top"]), []).append(w)
-            tops = sorted(lines)
+                if w["top"] >= bottom:
+                    lines.setdefault(round(w["top"]), []).append(w)
             rows, pend = [], []
-            for t in tops:
+            for t in sorted(lines):
                 ws = sorted(lines[t], key=lambda w: w["x0"])
                 left = [w for w in ws if w["x1"] <= x_name_max]
                 right = [w for w in ws if w["x0"] > x_name_max]
                 if left and CODE.match(left[0]["text"]) and left[0]["x0"] < 50:
-                    cell = lambda n, tol=6: [w["text"] for w in right if cols[n][0] - tol <= (w["x0"] + w["x1"]) / 2 <= cols[n][1] + tol]
-                    sira = [w["text"] for w in right if cols[11][0] - 14 <= w["x1"] <= cols[11][1] + 4]
-                    puan = [w["text"] for w in right if cols[11][1] + 2 <= w["x0"] <= cols[12][1] and PUAN.match(w["text"])]
+                    def cell(n, tol=6):
+                        return [w["text"] for w in right if cols[n][0] - tol <= (w["x0"] + w["x1"]) / 2 <= cols[n][1] + tol]
+
+                    sira = [w["text"] for w in right if sc[0] - 14 <= w["x1"] <= sc[1] + 4]
+                    puan = [w["text"] for w in right if sc[1] + 2 <= w["x0"] <= pc[1] and PUAN.match(w["text"])]
                     rows.append(dict(
                         top=t, kod=left[0]["text"], uni=uni, fak=fak,
                         ad=[" ".join(w["text"] for w in left[1:])],
@@ -66,7 +110,9 @@ def parse(path):
                         puan=puan[0] if puan and PUAN.match(puan[0]) else None,
                     ))
                 elif left:
-                    text = " ".join(w["text"] for w in left)
+                    # uzun başlık satırı ad sütununun sağına taşabilir ("... ALACAKLAR (Devlet Üniversitesi)"): sağdaki sözcükler rakamsızsa hepsini al
+                    words_ = [w for w in ws if w["text"] != "YÖKAK"] if right and not any(re.search(r"\d", w["text"]) for w in right) else left
+                    text = " ".join(w["text"] for w in words_)
                     if not re.match(r"^(\d{4}-YKS\b|\d+$)", text):  # sayfa altbilgisi ve sayfa numarası
                         pend.append((t, text))
             # üst başlıklar ve devam satırları: yukarıdan aşağı sırayla işle
@@ -85,7 +131,7 @@ def parse(path):
                     caps = []
                 elif s in ("Üniversitesi)", "Üniversitesi"):
                     continue
-                elif (s.upper() == s and len(s) > 3) or re.search(r"FAKÜLTESİ|YÜKSEKOKULU|ENSTİTÜSÜ|KONSERVATUVARI", s):
+                elif (s.upper() == s and len(s) > 3) or HEADING.search(s):
                     ctx_fak = s
                     caps.append(s)
                 else:
@@ -116,12 +162,44 @@ def tr_title(text):
     return " ".join(words)
 
 
-def emit(data, outdir, meta):
-    """Yalnız 2025 sırası ve puanı olan programlar; puan türü başına bir JSON dosyası, sıraya göre artan."""
-    import os
+def scope_and_check(data, label):
+    """Kapsam: Türkiye'deki devlet (kod 1xxx) ve vakıf (2xxx) üniversiteleri. KKTC (3xxx), yurt dışı (4xxx) ve bakanlıklar
+    adına açılan programların başlık düzeni farklı ve genel yerleştirme dışı. Sonra bütünlük kontrolleri."""
+    data = [r for r in data if r["kod"][0] in "12" and "ADINA" not in (r["uni"] or {}).get("ad", "")]
+    assert all(r["uni"] for r in data), f"{label}: üniversitesiz satır"
+    assert len({r["kod"] for r in data}) == len(data), f"{label}: yinelenen program kodu"
+    # program kodunun ilk 4 hanesi üniversiteyi belirler: başlık atlanırsa iki üniversite karışır
+    by_name, by_prefix = {}, {}
+    for r in data:
+        by_name.setdefault(r["uni"]["ad"], set()).add(r["kod"][:4])
+        by_prefix.setdefault(r["kod"][:4], set()).add(r["uni"]["ad"])
+    bad = [(n, sorted(x)) for n, x in by_name.items() if len(x) > 1] + [(x, sorted(n)) for x, n in by_prefix.items() if len(n) > 1]
+    assert not bad, f"{label}: üniversite/kod öneki tutarsız: {bad[:4]}"
+    counts = {}
+    for r in data:
+        counts[r["uni"]["ad"]] = counts.get(r["uni"]["ad"], 0) + 1
+    assert max(counts.values()) < 700, f"{label}: bir üniversite çok fazla program topladı"
+    # puan arttıkça sıra iyileşmeli: bozuk sütun/damga hatasını yakalar
+    for tur in TURLER:
+        xs = sorted(((float(r["puan"]), int(r["sira"])) for r in data if r["tur"] == tur and r["puan"] and r["sira"]), reverse=True)
+        mx = 0
+        for _, sira in xs:
+            assert sira >= mx - 2000, f"{label} {tur}: puan/sıra tutarsız ({sira} < {mx})"
+            mx = max(mx, sira)
+    print(f"{label}: {len(data)} program, {len(by_name)} üniversite", file=sys.stderr)
+    return data
+
+
+def build(outdir, raws):
+    """raws: {kılavuz yılı: ham satırlar}. En yeni kılavuz tabandır; veri yılı = kılavuz yılı - 1."""
+    years = sorted(raws, reverse=True)
+    scoped = {y: scope_and_check(raws[y], f"{y} kılavuzu") for y in years}
+    base_year = years[0]
+    hist_guides = years[1:]  # 2025, 2024, 2023 kılavuzları -> 2024, 2023, 2022 verisi
+    by_kod = {y: {r["kod"]: r for r in scoped[y]} for y in hist_guides}
     os.makedirs(outdir, exist_ok=True)
-    for tur in ("SAY", "EA", "SÖZ", "DİL"):
-        rows = [r for r in data if r["tur"] == tur and r["sira"] and r["puan"]]
+    for tur in TURLER:
+        rows = [r for r in scoped[base_year] if r["tur"] == tur and r["sira"] and r["puan"]]
         unis, idx = [], {}
         for r in rows:
             key = (r["uni"]["ad"], r["uni"]["tur"])
@@ -129,45 +207,47 @@ def emit(data, outdir, meta):
                 idx[key] = len(unis)
                 unis.append([tr_title(key[0]), key[1]])
         rows.sort(key=lambda r: (int(r["sira"]), r["kod"]))
+        out_rows, with_hist = [], 0
+        for r in rows:
+            hist = []
+            for y in hist_guides:
+                old = by_kod[y].get(r["kod"])
+                ok = old and old["tur"] == tur and old["sira"] and old["puan"]
+                hist.append([int(old["sira"]), float(old["puan"])] if ok else None)
+            with_hist += any(hist)
+            out_rows.append([r["kod"], idx[(r["uni"]["ad"], r["uni"]["tur"])], r["ad"], int(r["sure"]), int(r["kont"] or 0), int(r["sira"]), float(r["puan"]), hist])
+        meta = {
+            "tur": tur,
+            "programlar": len(out_rows),
+            "yil": base_year - 1,
+            "gecmisYillar": [y - 1 for y in hist_guides],
+            "kaynaklar": [dict(yil=y - 1, **GUIDES[y]) for y in years],
+            "uretim": datetime.date.today().isoformat(),
+        }
         out = {
-            "meta": dict(meta, tur=tur, programlar=len(rows)),
+            "meta": meta,
             "unis": unis,
-            # [program kodu, üniversite sırası, ad, öğrenim süresi, 2026 genel kontenjan, 2025 başarı sırası, 2025 en küçük puan]
-            "rows": [[r["kod"], idx[(r["uni"]["ad"], r["uni"]["tur"])], r["ad"], int(r["sure"]), int(r["kont"] or 0), int(r["sira"]), float(r["puan"])] for r in rows],
+            # [program kodu, üniversite sırası, ad, öğrenim süresi, {baz yıl+1} genel kontenjan, {baz yıl} başarı sırası, {baz yıl} en küçük puan,
+            #  önceki yıllar: her biri [sıra, puan] veya null, meta.gecmisYillar sırasıyla]
+            "rows": out_rows,
         }
         name = {"SAY": "say", "EA": "ea", "SÖZ": "soz", "DİL": "dil"}[tur]
         with open(os.path.join(outdir, f"{name}.json"), "w") as f:
             json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
-        print(tur, len(rows), "program,", len(unis), "üniversite", file=sys.stderr)
+        print(f"{tur}: {len(out_rows)} program, {len(unis)} üniversite, geçmişi olan {with_hist}", file=sys.stderr)
 
 
 if __name__ == "__main__":
-    import datetime
-    data = parse(sys.argv[1])
-    print(len(data), "satır", file=sys.stderr)
-    # Kapsam: Türkiye'deki devlet (kod 1xxx) ve vakıf (2xxx) üniversiteleri. KKTC (3xxx) ve yurt dışı (4xxx) bölümleri ile
-    # bakanlıklar adına açılan programlar başlık düzeni farklı ve genel yerleştirme dışı olduğundan alınmaz.
-    data = [r for r in data if r["kod"][0] in "12" and "ADINA" not in r["uni"]["ad"]]
-    print(len(data), "satır kapsamda", file=sys.stderr)
-    # program kodunun ilk 4 hanesi üniversiteyi belirler: başlık atlanırsa iki üniversite karışır
-    by_name, by_prefix = {}, {}
-    for r in data:
-        by_name.setdefault(r["uni"]["ad"], set()).add(r["kod"][:4])
-        by_prefix.setdefault(r["kod"][:4], set()).add(r["uni"]["ad"])
-    bad = [(n, sorted(x)) for n, x in by_name.items() if len(x) > 1] + [(x, sorted(n)) for x, n in by_prefix.items() if len(n) > 1]
-    assert not bad, f"üniversite/kod öneki tutarsız: {bad[:5]}"
-    assert max(sum(1 for r in data if r["uni"]["ad"] == n) for n in by_name) < 700, "bir üniversite çok fazla program topladı"
-    print(len(by_name), "üniversite", file=sys.stderr)
-    # puan arttıkça sıra iyileşmeli: bozuk sütun/damga hatasını yakalar
-    for tur in ("SAY", "EA", "SÖZ", "DİL"):
-        xs = sorted(((float(r["puan"]), int(r["sira"])) for r in data if r["tur"] == tur and r["puan"] and r["sira"]), reverse=True)
-        mx = 0
-        for _, sira in xs:
-            assert sira >= mx - 2000, f"{tur}: puan/sıra tutarsız ({sira} < {mx})"
-            mx = max(mx, sira)
-    emit(data, sys.argv[2], {
-        "kaynak": "ÖSYM 2026-YKS Yükseköğretim Programları ve Kontenjanları Kılavuzu (21 Temmuz 2026), Tablo 4",
-        "url": "https://cdn.osym.gov.tr/pdfdokuman/2026/YKS/TERCIH/kontkilavuz_yktd21072026.pdf",
-        "yil": 2025,
-        "uretim": datetime.date.today().isoformat(),
-    })
+    cmd = sys.argv[1] if len(sys.argv) > 1 else ""
+    if cmd == "parse" and len(sys.argv) == 6:
+        data = parse(sys.argv[2], int(sys.argv[3]), int(sys.argv[4]))
+        json.dump(data, open(sys.argv[5], "w"), ensure_ascii=False)
+        print(len(data), "satır", file=sys.stderr)
+    elif cmd == "build" and len(sys.argv) >= 4:
+        raws = {}
+        for arg in sys.argv[3:]:
+            year, path = arg.split("=", 1)
+            raws[int(year)] = json.load(open(path))
+        build(sys.argv[2], raws)
+    else:
+        sys.exit(__doc__)
