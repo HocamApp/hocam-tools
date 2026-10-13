@@ -35,6 +35,15 @@ export const TOOLS: Tool[] = [
     blurb: "LGS netinden ya da puanından yaklaşık yüzdelik dilimini ve sıranı gör.",
     updatedAt: "2026-10-12",
   },
+  {
+    slug: "bolum-bulucu",
+    name: "YKS Sıralamasına Göre Bölüm Bulucu",
+    metaTitle: "YKS Sıralamasına Göre Bölüm Bulma (2025 Taban Sıraları)",
+    description:
+      "YKS sıralamanı gir; ÖSYM'nin 2025 taban sıralarına göre hangi 4 yıllık bölümlere girebileceğini, hangilerinin sınırda olduğunu gör. Ücretsiz.",
+    blurb: "Sıralamanla hangi lisans bölümlerine girebileceğini 2025 taban sıralarıyla gör.",
+    updatedAt: "2026-10-12",
+  },
 ];
 
 export function toolMetadata(tool: Tool): Metadata {
