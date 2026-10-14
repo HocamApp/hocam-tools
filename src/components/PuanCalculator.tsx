@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { MAX_DIPLOMA, computeObp, parseDiploma } from "@/lib/obp";
@@ -354,6 +355,15 @@ export function PuanCalculator() {
                 </p>
               )}
             </>
+          )}
+
+          {result.tytOk && (
+            <div className="mt-5 rounded-xl border-2 border-ink p-4">
+              <p>Bu sıralamayla hangi bölümlere girebileceğini 2025 taban sıralarıyla gör.</p>
+              <Link href="/bolum-bulucu" className={`${btnSecondary} mt-3`}>
+                Sıralamamla bölüm bul
+              </Link>
+            </div>
           )}
 
           <div className="mt-5 rounded-xl bg-pink-pale p-4">
