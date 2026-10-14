@@ -28,6 +28,8 @@ export type Program = {
   puan: number;
   /** Önceki yılların [taban sırası, taban puanı] değerleri (Dataset.gecmisYillar sırasıyla); program o yıl yoksa null. */
   gecmis: ([number, number] | null)[];
+  /** Önceki yılların genel kontenjanı (Dataset.yil, yil-1, yil-2 sırasıyla); program o yıl yoksa null. */
+  konts: (number | null)[];
 };
 
 export type Band = "rahat" | "sinirda" | "zor";
@@ -109,13 +111,13 @@ export function matchPrograms(programs: Program[], rank: number, { query = "", u
 type Raw = {
   meta: { yil: number; gecmisYillar: number[]; kaynaklar: { yil: number; ad: string; url: string; arsiv?: string }[]; uretim: string };
   unis: [string, string][];
-  rows: [string, number, string, number, number, number, number, ([number, number] | null)[]][];
+  rows: [string, number, string, number, number, number, number, ([number, number] | null)[], (number | null)[]][];
 };
 
 export type Dataset = { programs: Program[]; yil: number; gecmisYillar: number[]; kaynaklar: Raw["meta"]["kaynaklar"] };
 
 export function toDataset(raw: Raw): Dataset {
-  const programs = raw.rows.map(([kod, u, ad, sure, kont, sira, puan, gecmis]) => ({
+  const programs = raw.rows.map(([kod, u, ad, sure, kont, sira, puan, gecmis, konts]) => ({
     kod,
     uni: raw.unis[u][0],
     uniTur: raw.unis[u][1],
@@ -125,8 +127,27 @@ export function toDataset(raw: Raw): Dataset {
     sira,
     puan,
     gecmis,
+    konts,
   }));
   return { programs, yil: raw.meta.yil, gecmisYillar: raw.meta.gecmisYillar, kaynaklar: raw.meta.kaynaklar };
+}
+
+export type YearRow = { yil: number; kont: number | null; puan: number | null; sira: number | null };
+
+/**
+ * Program kartındaki yıl satırları, en yeni yıl üstte: baz yılın ertesi yılı (yalnız 2026 kontenjanı; taban puanı ve
+ * sırası bir sonraki kılavuzla gelir), baz yıl, sonra önceki yıllar. Değeri olmayan alan null.
+ */
+export function yearRows(p: Program, yil: number, gecmisYillar: number[]): YearRow[] {
+  const rows: YearRow[] = [
+    { yil: yil + 1, kont: p.kont, puan: null, sira: null },
+    { yil, kont: p.konts[0] ?? null, puan: p.puan, sira: p.sira },
+  ];
+  gecmisYillar.forEach((y, i) => {
+    const h = p.gecmis[i];
+    rows.push({ yil: y, kont: p.konts[i + 1] ?? null, puan: h ? h[1] : null, sira: h ? h[0] : null });
+  });
+  return rows;
 }
 
 /** Puan türünün verisini ayrı parça olarak yükler (yalnız seçilen tür indirilir). */

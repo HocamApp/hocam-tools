@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { BAND_LIMITS, bandOf, fold, matchPrograms, parseSira, poolScale, toDataset, type Program, TURLER } from "./bolum";
+import { BAND_LIMITS, bandOf, fold, matchPrograms, parseSira, poolScale, toDataset, yearRows, type Program, TURLER } from "./bolum";
 
 const P = (kod: string, ad: string, sira: number, uni = "Örnek Üniversitesi", uniTur = "Devlet"): Program => ({
-  kod, uni, uniTur, ad, sure: 4, kont: 10, sira, puan: 300, gecmis: [],
+  kod, uni, uniTur, ad, sure: 4, kont: 10, sira, puan: 300, gecmis: [], konts: [],
 });
 
 test("parseSira: nokta/boşluk ayracı, sınırlar ve geçersiz girdi", () => {
@@ -86,6 +86,8 @@ for (const tur of TURLER) {
       assert.ok(p.puan > 100 && p.puan <= 560, `${p.kod} puan ${p.puan}`);
       assert.ok(p.sure >= 3 && p.sure <= 6);
       assert.equal(p.gecmis.length, 3);
+      assert.equal(p.konts.length, 3);
+      for (const k of p.konts) assert.ok(k === null || (k >= 1 && k <= 20000), `${p.kod} kontenjan ${k}`);
       for (const h of p.gecmis) assert.ok(h === null || (h[0] >= 1 && h[0] <= 3_000_000 && h[1] > 100 && h[1] <= 560), `${p.kod} geçmiş ${h}`);
     }
     // eşleşme çalışıyor: programların çoğunun en az bir önceki yılı var
@@ -107,4 +109,14 @@ test("veri: bilinen satır (ÖSYM 2026 Kılavuzu Tablo 4, Abdullah Gül Bilgisay
   assert.equal(p.ad, "Bilgisayar Mühendisliği (İngilizce)");
   // 2025 kılavuzu Tablo 4: 2024 sırası 46890, puanı 439.02957
   assert.deepEqual(p.gecmis[0], [46890, 439.02957]);
+  // 2024 ve 2023 kılavuzlarından: 2023 sırası 39283 / 471.55314, 2022 sırası 40125 / 469.42657; kontenjanlar 80, 80, 75
+  assert.deepEqual(p.gecmis, [[46890, 439.02957], [39283, 471.55314], [40125, 469.42657]]);
+  assert.deepEqual(p.konts, [80, 80, 75]);
+  assert.deepEqual(yearRows(p, 2025, [2024, 2023, 2022]), [
+    { yil: 2026, kont: 80, puan: null, sira: null },
+    { yil: 2025, kont: 80, puan: 442.53227, sira: 53079 },
+    { yil: 2024, kont: 80, puan: 439.02957, sira: 46890 },
+    { yil: 2023, kont: 75, puan: 471.55314, sira: 39283 },
+    { yil: 2022, kont: null, puan: 469.42657, sira: 40125 },
+  ]);
 });

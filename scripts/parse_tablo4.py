@@ -86,10 +86,14 @@ def parse(path, first, last):
                 continue
             x_name_max = cols[3][0] - 4
             sc, pc = cols[sira_n], cols[puan_n]
-            lines = {}
-            for w in words:
-                if w["top"] >= bottom:
-                    lines.setdefault(round(w["top"]), []).append(w)
+            # aynı satırdaki sözcüklerin üstleri 6,0 ve 6,5 pt yazı tipleri yüzünden 1 pt kayabilir: satır ortasına göre kümele
+            lines, last_c = {}, None
+            for w in sorted((w for w in words if w["top"] >= bottom), key=lambda w: (w["top"] + w["bottom"]) / 2):
+                c = (w["top"] + w["bottom"]) / 2
+                if last_c is None or c - last_c > 1.6:
+                    key = c
+                lines.setdefault(key, []).append(w)
+                last_c = c
             rows, pend = [], []
             for t in sorted(lines):
                 ws = sorted(lines[t], key=lambda w: w["x0"])
@@ -209,13 +213,15 @@ def build(outdir, raws):
         rows.sort(key=lambda r: (int(r["sira"]), r["kod"]))
         out_rows, with_hist = [], 0
         for r in rows:
-            hist = []
+            hist, konts = [], []
             for y in hist_guides:
                 old = by_kod[y].get(r["kod"])
-                ok = old and old["tur"] == tur and old["sira"] and old["puan"]
-                hist.append([int(old["sira"]), float(old["puan"])] if ok else None)
+                same = old and old["tur"] == tur
+                # y kılavuzu: y yılının genel kontenjanı ve (y-1) yılının taban sırası/puanı
+                konts.append(int(old["kont"]) if same and old["kont"] else None)
+                hist.append([int(old["sira"]), float(old["puan"])] if same and old["sira"] and old["puan"] else None)
             with_hist += any(hist)
-            out_rows.append([r["kod"], idx[(r["uni"]["ad"], r["uni"]["tur"])], r["ad"], int(r["sure"]), int(r["kont"] or 0), int(r["sira"]), float(r["puan"]), hist])
+            out_rows.append([r["kod"], idx[(r["uni"]["ad"], r["uni"]["tur"])], r["ad"], int(r["sure"]), int(r["kont"] or 0), int(r["sira"]), float(r["puan"]), hist, konts])
         meta = {
             "tur": tur,
             "programlar": len(out_rows),
@@ -228,7 +234,8 @@ def build(outdir, raws):
             "meta": meta,
             "unis": unis,
             # [program kodu, üniversite sırası, ad, öğrenim süresi, {baz yıl+1} genel kontenjan, {baz yıl} başarı sırası, {baz yıl} en küçük puan,
-            #  önceki yıllar: her biri [sıra, puan] veya null, meta.gecmisYillar sırasıyla]
+            #  önceki yıllar: her biri [sıra, puan] veya null, meta.gecmisYillar sırasıyla (2024, 2023, 2022),
+            #  önceki yılların genel kontenjanı: baz yıl, baz yıl-1, baz yıl-2 (2025, 2024, 2023) veya null]
             "rows": out_rows,
         }
         name = {"SAY": "say", "EA": "ea", "SÖZ": "soz", "DİL": "dil"}[tur]
