@@ -34,9 +34,11 @@
 
 ## 2. Gizlilik (KVKK)
 
-- Araçlar çerez, `localStorage`/`sessionStorage`, analytics, üçüncü taraf script veya ağ çağrısı
-  **kullanmaz**. Girdi tarayıcıdan çıkmaz. Fontlar build sırasında barındırılır (`next/font`),
-  çalışma anında Google'a istek gitmez.
+- Hesaplama araçları çerez, `localStorage`/`sessionStorage`, analytics, üçüncü taraf script veya
+  ağ çağrısı **kullanmaz**. Girdi tarayıcıdan çıkmaz. Üst menü, aynı alan adındaki ana Hocam
+  uygulamasının navbarını gösterir; oturum açıksa ana uygulamanın mevcut oturumunu yalnız
+  menü için kullanır. Araç girdileri bu oturuma ya da menü isteklerine aktarılmaz.
+  Fontlar build sırasında barındırılır (`next/font`), çalışma anında Google'a istek gitmez.
 - Analytics veya herhangi bir izleme eklemek ayrı bir karardır: onay (consent) akışı ana sitenin
   `DiscoveryConsentBanner`'ı ile birlikte düşünülmeli. Kendi başına ekleme.
 

@@ -27,7 +27,7 @@ Everything lives under `basePath: "/araclar"`, so `/` alone is a 404 by design.
 
 ## Rules
 
-- No cookies, storage, analytics or network calls from the tools. Input never leaves the browser.
+- Calculators do not store or send input and use no analytics. The shared Hocam navbar uses the existing account session when signed in; calculator input never enters that session.
 - Links to the main site are absolute and carry `utm_source=araclar&utm_medium=tool&utm_campaign=<slug>`.
 - A new tool needs formulas tested against an official source, an `updatedAt` date, and visible explanatory text.
 - Brand tokens are copied from `hocam-frontend/src/app/globals.css`; keep them in sync by hand.
