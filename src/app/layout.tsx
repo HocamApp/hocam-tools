@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
-import Image from "next/image";
+import { SharedNavbar } from "@/components/SharedNavbar";
 
 import "./globals.css";
-// Statik import: basePath altında /brand/... yolunu next/image kendisi çözer.
-import logo from "../../public/brand/hocam-logo.png";
-import { SITE_URL, TOOLS_PATH, mainUrl } from "@/lib/site";
+import { SITE_URL, mainUrl } from "@/lib/site";
 
 /* latin-ext şart: ğ, ş, İ, ı yoksa sistem fontuna düşer ve kelime ortasında karışık glif görünür. */
 const poppins = Poppins({
@@ -49,28 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           İçeriğe geç
         </a>
 
-        <header className="border-b border-line bg-surface">
-          <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3">
-            <a href={SITE_URL} className="flex min-h-11 items-center gap-2 text-xl font-bold">
-              <Image src={logo} alt="" width={32} height={32} />
-              Hocam
-            </a>
-            <nav aria-label="Ana gezinme" className="flex items-center gap-5 text-base font-medium">
-              {/* Plain <a>, not <Link>: behind the main site's proxy an RSC request for the hub
-                  404s on Vercel (it is routed as /araclar.rsc, which no rewrite can match), so
-                  next/link would prefetch a 404 on every page and fall back to a full load anyway. */}
-              <a href={TOOLS_PATH} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">
-                Araçlar
-              </a>
-              <a
-                href={mainUrl("/", "site-header")}
-                className="inline-flex min-h-11 items-center underline-offset-4 hover:underline"
-              >
-                Hoca bul
-              </a>
-            </nav>
-          </div>
-        </header>
+        <SharedNavbar />
 
         <main id="icerik" tabIndex={-1} className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 focus:outline-none sm:py-12">
           {children}
@@ -92,7 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 ))}
               </ul>
             </nav>
-            <p className="mt-3">© Hocam. Bu araçlar çerez kullanmaz ve girdiğin bilgileri kaydetmez.</p>
+            <p className="mt-3">© Hocam. Hesaplama girdilerin kaydedilmez; oturumun açıksa üst menü Hocam hesabını kullanır.</p>
           </div>
         </footer>
       </body>
