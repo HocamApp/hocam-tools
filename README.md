@@ -18,6 +18,17 @@ npm run typecheck && npm run lint && npm run build
 
 Everything lives under `basePath: "/araclar"`, so `/` alone is a 404 by design.
 
+## Cloudflare (static assets)
+
+The whole app is static, so the Cloudflare build exports it to plain files and serves them as Workers static assets (no Worker code).
+
+```bash
+WORKERS_CI_BRANCH=local npm run build:workers   # next build (output: export) + scripts/build-workers-assets.mjs -> dist/
+npm run preview:workers                          # wrangler dev, serves dist/ locally
+```
+
+`WORKERS_CI_BRANCH` is set only on Cloudflare, so the Vercel build is unchanged. `_redirects` and `_headers` are generated from `redirects()` and `headers()` in `next.config.js` (Next ignores both for an export), and `wrangler.jsonc` sets `html_handling: "drop-trailing-slash"` so URLs match the Next build. Deploy: build command `npm run build:workers`, deploy command `npx wrangler deploy`.
+
 ## Layout
 
 - `src/lib/net.ts`, `obp.ts`, `puan.ts`: formulas as pure functions, with tests next to them (`puan.ts` uses ÖSYM tables in `osym-data.ts`).
