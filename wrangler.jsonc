@@ -1,0 +1,13 @@
+{
+  // Static assets only: no Worker code. The main site proxies /araclar to this
+  // Worker's URL (TOOLS_ORIGIN). dist/ is produced by scripts/build-workers-assets.mjs.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hocam-tools",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Same URLs as the Next build on Vercel: no trailing slash, /foo.html redirects to /foo.
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
