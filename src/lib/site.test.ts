@@ -15,8 +15,8 @@ test("mainUrl: filtre, UTM ve hash", () => {
     "https://www.hocamozelders.com/?exam_type=TYT&subject=Matematik&utm_source=araclar&utm_medium=tool&utm_campaign=tyt-net-hesaplama#ys-tutor-list-title",
   );
   assert.equal(
-    mainUrl("/yks-ozel-ders", "obp-hesaplama"),
-    "https://www.hocamozelders.com/yks-ozel-ders?utm_source=araclar&utm_medium=tool&utm_campaign=obp-hesaplama",
+    mainUrl("/", "obp-hesaplama"),
+    "https://www.hocamozelders.com/?utm_source=araclar&utm_medium=tool&utm_campaign=obp-hesaplama",
   );
 });
 
