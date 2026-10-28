@@ -76,6 +76,12 @@
 
 - Ana siteye bağlama (`hocam-frontend`'te rewrite, robots, footer) ve production yayını
   sahiplerin açık onayı olmadan yapılmaz. O PR'lar `hocam-frontend` kurallarına tabidir.
+- Cloudflare build'i (`WORKERS_CI_BRANCH` yalnız orada tanımlıdır) uygulamayı `output: "export"` ile
+  statik dosyaya çevirir ve Workers static assets olarak sunar; Worker kodu yoktur. Bu yüzden sunucu
+  gerektiren hiçbir şey eklenmez: route handler, middleware, `cookies()`/`headers()`, `next/image`
+  optimizasyonu, `generateStaticParams`sız dinamik rota, on-demand revalidate. Eklenecekse önce konuşulur;
+  aksi hâlde Cloudflare build'i kırılır. Yönlendirme ve başlık kuralları yalnız `next.config.js`'te
+  tutulur; `scripts/build-workers-assets.mjs` bunlardan `_redirects` ve `_headers` üretir.
 
 ## 7. Git / PR akışı
 
@@ -98,4 +104,4 @@ hiçbir şey doğrudan `main`'e gitmez.**
 9. Rapor: PR URL'i, merge commit SHA'sı, ne değişti (kısa), test/lint/build sonucu, deploy durumu.
 
 ---
-Son güncelleme: 10 Ekim 2026 — repo oluşturuldu, CI eklendi (PR #1).
+Son güncelleme: 26 Ekim 2026 — Cloudflare statik build'i eklendi. (10 Ekim 2026: repo oluşturuldu, CI eklendi, PR #1.)

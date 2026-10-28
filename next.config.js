@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
+/*
+ * Cloudflare build (WORKERS_CI_BRANCH is set only there): every page is static,
+ * so the app is exported to plain files and served as Workers static assets,
+ * with no Worker code. The Vercel build is unchanged. redirects() and headers()
+ * below do not apply to an export; scripts/build-workers-assets.mjs writes the
+ * same rules to _redirects and _headers instead.
+ */
+const isWorkersBuild = Boolean(process.env.WORKERS_CI_BRANCH);
+
 const nextConfig = {
+  ...(isWorkersBuild ? { output: "export" } : {}),
   /*
    * The whole app lives under /araclar. The main site proxies that one prefix
    * here with a rewrite, so Google sees hocamozelders.com/araclar/... on a
