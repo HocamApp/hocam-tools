@@ -99,7 +99,7 @@ export function ToolPage({ tool, lead, faq, article, children, showCta = true }:
             Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
           </p>
           <a
-            href={mainUrl("/yks-ozel-ders", tool.slug)}
+            href={mainUrl("/", tool.slug)}
             className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
           >
             YKS özel ders hocalarını gör

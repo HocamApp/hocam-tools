@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
 const FOOTER_LINKS = [
-  { label: "YKS özel ders", path: "/yks-ozel-ders" },
+  { label: "Hoca bul", path: "/" },
   { label: "Nasıl çalışır", path: "/nasil-calisir" },
   { label: "Hoca doğrulama", path: "/hocalar-nasil-dogrulaniyor" },
   { label: "İletişim", path: "/iletisim" },

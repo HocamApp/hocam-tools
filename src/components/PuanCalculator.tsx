@@ -384,7 +384,7 @@ export function PuanCalculator() {
               <>
                 <p>Sıranı yükseltmek için YKS&apos;de derece yapmış hocalara göz at.</p>
                 <a
-                  href={mainUrl("/yks-ozel-ders", CAMPAIGN)}
+                  href={mainUrl("/", CAMPAIGN)}
                   className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
                 >
                   YKS özel ders hocalarını gör
