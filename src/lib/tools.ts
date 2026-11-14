@@ -44,6 +44,24 @@ export const TOOLS: Tool[] = [
     blurb: "Sıralamanla hangi lisans bölümlerine girebileceğini 2025 taban sıralarıyla gör.",
     updatedAt: "2026-10-13",
   },
+  {
+    slug: "yks-lgs-kac-gun-kaldi",
+    name: "YKS ve LGS Kaç Gün Kaldı",
+    metaTitle: "YKS ve LGS Kaç Gün Kaldı? 2027 Sınav Sayacı ve Konu Planlayıcı",
+    description:
+      "2027 YKS (TYT, AYT, YDT) ve LGS için sınava kaç gün, hafta ve saat kaldığını gör. Kalan konu sayını gir, sınava kadar günlük çalışma planını çıkar.",
+    blurb: "2027 YKS ve LGS için kalan gün sayacı ve kalan konu sayına göre günlük çalışma planlayıcı.",
+    updatedAt: "2026-11-15",
+  },
+  {
+    slug: "pomodoro-sayaci",
+    name: "Pomodoro Çalışma Sayacı",
+    metaTitle: "Pomodoro Çalışma Sayacı - YKS ve LGS Odak Süresi Takibi",
+    description:
+      "Odak ve mola süreni ayarla, kronometreyi başlat. Giriş yaptığında eski sayaçlarını hatırla ve toplam kaç saat çalıştığını takip et.",
+    blurb: "Odak ve mola süresini ayarla; giriş yaptığında eski sayaçlarını ve toplam çalışma saatini gör.",
+    updatedAt: "2026-11-15",
+  },
 ];
 
 export function toolMetadata(tool: Tool): Metadata {

@@ -17,9 +17,11 @@ type Props = {
   children: ReactNode;
   /** Ana siteye (YKS özel ders) yönlendiren kutu; YKS dışı araçlarda kapatılır. Varsayılan: açık. */
   showCta?: boolean;
+  /** Sayfa altındaki doğrulama/gizlilik notu; verilmezse standart ÖSYM notu gösterilir. */
+  footerNote?: string;
 };
 
-export function ToolPage({ tool, lead, faq, article, children, showCta = true }: Props) {
+export function ToolPage({ tool, lead, faq, article, children, showCta = true, footerNote }: Props) {
   const others = TOOLS.filter((t) => t.slug !== tool.slug);
   const updated = new Date(tool.updatedAt).toLocaleDateString("tr-TR", {
     day: "numeric",
@@ -121,8 +123,9 @@ export function ToolPage({ tool, lead, faq, article, children, showCta = true }:
       </section>
 
       <p className="mt-12 text-sm text-ink-mid">
-        Son güncelleme: {updated}. Sonuçlar bilgilendirme amaçlıdır; resmî değerlendirme ve kılavuz
-        hükümleri ÖSYM&apos;ye aittir. Bu sayfada girdiğin bilgiler cihazından çıkmaz ve kaydedilmez.
+        Son güncelleme: {updated}.{" "}
+        {footerNote ??
+          "Sonuçlar bilgilendirme amaçlıdır; resmî değerlendirme ve kılavuz hükümleri ÖSYM'ye aittir. Bu sayfada girdiğin bilgiler cihazından çıkmaz ve kaydedilmez."}
       </p>
     </>
   );
