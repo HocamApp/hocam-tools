@@ -10,11 +10,14 @@
   --pink-pale: #fce5f1;
   --gold: #ffd100;
   --gold-ink: #4a3b00;
+  --yellow-soft: #fdffc7;
   --paper: #fbf6f6;
   --ink: #02171a;
   --ink-mid: #5c6b6d;
   --line: #e6dddd;
   --surface: #ffffff;
+  --band: #0c0e09;
+  --on-band: #fbf6f6;
   --success: #1c7a55;
   --error: #b33a24;
 }

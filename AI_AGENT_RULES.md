@@ -2,7 +2,8 @@
 
 > Bu dosya, bu repoda çalışan herhangi bir AI kodlama ajanının (Claude Code, Codex, Cursor,
 > vb.) **ilk okuması gereken dosyadır**. Repo, `hocamozelders.com/araclar` altında yayınlanacak
-> ücretsiz YKS araçlarını içerir (YKS puan ve sıralama, LGS sıralama). `hocam-frontend` ve
+> ücretsiz YKS/LGS araçlarını içerir (YKS puan ve sıralama, LGS sıralama, bölüm bulucu,
+> YKS ve LGS kaç gün kaldı planlayıcısı, Pomodoro çalışma sayacı). `hocam-frontend` ve
 > `hocam-backend` repolarının `AI_AGENT_RULES.md` dosyaları yalnız o repoları bağlar; bu dosya
 > yalnız bu repoyu. Çelişki olursa **bu dosya** README'nin üstündedir.
 
@@ -30,15 +31,20 @@
   (SSS ve TYT/AYT soru kitapçıkları) doğrulandı; kaynak bağlantıları `src/lib/net.ts` ve
   `src/lib/obp.ts` dosya başlarındadır. 2027-YKS Kılavuzu/SSS yayımlanınca yeniden kontrol edilir ve
   `updatedAt` güncellenir.
+- 2027-YKS (19-20 Haziran 2027) ve 2027-LGS (13 Haziran 2027) sınav tarihleri 15 Kasım 2026'da
+  ÖSYM 2027 Sınav Takvimi ve MEB 2027 Sınav Uygulama Takvimi'nden doğrulandı (`src/lib/countdown.ts`).
 - Sonuçlar bilgilendirmedir; sayfalardaki "resmî değerlendirme ÖSYM'ye aittir" uyarısı kaldırılmaz.
 
 ## 2. Gizlilik (KVKK)
 
-- Hesaplama araçları çerez, `localStorage`/`sessionStorage`, analytics, üçüncü taraf script veya
-  ağ çağrısı **kullanmaz**. Girdi tarayıcıdan çıkmaz. Üst menü, aynı alan adındaki ana Hocam
-  uygulamasının navbarını gösterir; oturum açıksa ana uygulamanın mevcut oturumunu yalnız
-  menü için kullanır. Araç girdileri bu oturuma ya da menü isteklerine aktarılmaz.
-  Fontlar build sırasında barındırılır (`next/font`), çalışma anında Google'a istek gitmez.
+- Hesaplama ve sayaç/planlama araçları çerez, analytics veya üçüncü taraf script **kullanmaz**. Hesaplama
+  girdileri tarayıcıdan çıkmaz.
+- İstisna (`pomodoro-sayaci`, sahip talimatı): oturum açmış kullanıcıların tamamladığı odak oturumları, eski
+  sayaçlarını hatırlamak ve toplam çalışma saatini göstermek için ana sitenin kimlik oturumu üzerinden
+  `hocam-backend` (`/api/schedule/pomodoro/`) ve kullanıcıya özel `localStorage` (`hocam:pomodoro:v1:<user_id>`)
+  üzerinde saklanır. Giriş yapmamış kullanıcılarda hiçbir kayıt tutulmaz.
+- Üst menü, aynı alan adındaki ana Hocam uygulamasının navbarını gösterir; hesaplama araçlarının girdileri bu
+  oturuma aktarılmaz. Fontlar build sırasında barındırılır (`next/font`), çalışma anında Google'a istek gitmez.
 - Analytics veya herhangi bir izleme eklemek ayrı bir karardır: onay (consent) akışı ana sitenin
   `DiscoveryConsentBanner`'ı ile birlikte düşünülmeli. Kendi başına ekleme.
 

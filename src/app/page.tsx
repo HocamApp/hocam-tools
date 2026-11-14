@@ -7,7 +7,7 @@ import { TOOLS } from "@/lib/tools";
 
 const TITLE = "Ücretsiz Sınav Araçları";
 const DESCRIPTION =
-  "YKS puan ve sıralama ile LGS sıralama hesaplama, sıralamana göre bölüm bulma: resmî verilerle yaklaşık sonucunu gör. Ücretsiz, kayıt gerekmez.";
+  "Beş ücretsiz sınav aracı: YKS puan ve sıralama, LGS sıralama, bölüm bulma, 2027 YKS ve LGS geri sayım konu planlayıcı ve Pomodoro çalışma sayacı.";
 
 export const metadata: Metadata = {
   // Kök segmentte layout'taki title.template uygulanmaz; son ek elle eklenir.
@@ -41,8 +41,7 @@ export default function ToolsHub() {
       />
       <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{TITLE}</h1>
       <p className="mt-3 max-w-2xl text-lg text-ink-mid">
-        YKS ve LGS için en çok aranan hesaplamalar ve sıralamana göre bölüm bulma, tek yerde. Hepsi ücretsiz; kayıt gerekmez ve
-        girdiğin bilgiler cihazından çıkmaz.
+        Beş ücretsiz araç: YKS puan ve sıralama, LGS sıralama, bölüm bulucu, YKS ve LGS kaç gün kaldı planlayıcısı ile Pomodoro çalışma sayacı. Giriş yaptığında Pomodoro oturumların hesabında saklanır.
       </p>
 
       <ul className="mt-8 grid gap-4 sm:grid-cols-2">
