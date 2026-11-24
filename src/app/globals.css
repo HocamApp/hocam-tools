@@ -2,22 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Marka değerleri hocam-frontend/src/app/globals.css (DESIGN.md) ile aynıdır.
-   --gold yalnızca dolgu içindir, metin rengi olarak kullanılmaz (1,6:1). */
+/* Marka değerleri hocam-frontend'in giriş yapılmış v3 (seçenek B) paletiyle
+   aynıdır (24 Kasım 2026): koyu bant plum, sarı yalnız plum bant üstünde dolgu
+   olarak (metni mürekkep), pembe dokunulan ana eylem. Sarı açık zeminde
+   metin taşımaz. */
 :root {
   --pink: #fa0050;
   --pink-deep: #d70f64;
   --pink-pale: #fce5f1;
-  --gold: #ffd100;
-  --gold-ink: #4a3b00;
+  --plum: #3a0c25;
+  --plum-quiet: #4f1a37;
+  --on-plum: #fff1f6;
+  --on-plum-mid: #e8c9d8;
+  --yellow: #fcff1a;
+  --gold: #fcff1a;
+  --gold-ink: #1c0f16;
   --yellow-soft: #fdffc7;
-  --paper: #fbf6f6;
-  --ink: #02171a;
-  --ink-mid: #5c6b6d;
-  --line: #e6dddd;
+  --paper: #faf5f6;
+  --ink: #1c0f16;
+  --ink-mid: #6b5a63;
+  --line: #ecdfe4;
   --surface: #ffffff;
-  --band: #0c0e09;
-  --on-band: #fbf6f6;
+  --band: #3a0c25;
+  --on-band: #fff1f6;
   --success: #1c7a55;
   --error: #b33a24;
 }
@@ -52,6 +59,6 @@
     @apply mt-3 list-disc space-y-1 pl-6;
   }
   .prose-hocam a {
-    @apply font-medium text-pink-deep underline;
+    @apply font-medium text-ink underline underline-offset-4;
   }
 }

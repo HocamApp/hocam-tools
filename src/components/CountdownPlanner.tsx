@@ -36,7 +36,7 @@ const EDITORIAL_COPY: Record<
     ],
     ctaTitle: "Konu kapatırken takıldığın yerde haftalar kaybetme",
     ctaBody:
-      "Hocam'da YKS'de derece yapmış, kimliği doğrulanmış üniversiteli hocalarla yalnız eksik konularına yönelik birebir online ders yapabilirsin.",
+      "Hocam'daki her hoca YKS'de ilk 20.000'e girmiş; onlarla yalnız eksik konularına yönelik birebir online ders yapabilirsin.",
     ctaLabel: "YKS özel ders hocalarını gör",
     ctaParams: { exam_type: "TYT" },
   },
@@ -49,7 +49,7 @@ const EDITORIAL_COPY: Record<
     ],
     ctaTitle: "Yeni nesil sorularda hız kazanmak tek başına zor geliyorsa",
     ctaBody:
-      "Hocam'da derece yapmış, kimliği doğrulanmış üniversiteli hocalarla eksik kazanımların üzerine birebir gidip soru çözüm pratiği kurabilirsin.",
+      "Hocam'daki her hoca YKS'de ilk 20.000'e girmiş; onlarla eksik kazanımların üzerine birebir gidip soru çözüm pratiği kurabilirsin.",
     ctaLabel: "Özel ders hocalarını gör",
     ctaParams: {},
   },
@@ -142,8 +142,8 @@ export function CountdownPlanner() {
               onClick={() => handleSelectTab(examKey)}
               className={`min-h-11 rounded-xl border px-4 py-3 text-left transition-colors ${
                 selected
-                  ? "border-ink bg-ink text-white"
-                  : "border-line bg-surface text-ink hover:border-ink"
+                  ? "border-plum bg-plum text-on-plum"
+                  : "border-line bg-surface text-ink hover:border-plum"
               }`}
             >
               <span className="block text-base font-bold">{item.tabLabel}</span>
@@ -168,13 +168,13 @@ export function CountdownPlanner() {
           className="rounded-2xl border border-line bg-surface p-6"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">
+            <span className="inline-block rounded-full bg-plum px-3 py-1 text-xs font-bold text-on-plum">
               RESMÎ TARİH · {schedule.dateSummary}
             </span>
             <a
               href={schedule.sourceUrl}
               rel="noopener"
-              className="text-xs font-medium text-pink-deep underline"
+              className="text-xs font-medium text-ink underline underline-offset-4"
             >
               {schedule.sourceLabel}
             </a>
@@ -206,7 +206,7 @@ export function CountdownPlanner() {
           </div>
 
           {countdown && !countdown.isPast && (
-            <div className="mt-4 grid gap-3 rounded-xl bg-yellow-soft/70 p-4 text-sm text-ink sm:grid-cols-2">
+            <div className="mt-4 grid gap-3 rounded-xl border border-line bg-paper p-4 text-sm text-ink sm:grid-cols-2">
               <p>
                 <span className="font-bold">Kalan tam hafta:</span>{" "}
                 <span className="tabular-nums">
@@ -253,9 +253,9 @@ export function CountdownPlanner() {
 
         <section
           aria-label="Kalan konularına göre çalışma planı"
-          className="rounded-2xl border border-line bg-pink-pale/55 p-6"
+          className="rounded-2xl border border-line bg-surface p-6"
         >
-          <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">
+          <span className="inline-block rounded-full bg-plum px-3 py-1 text-xs font-bold text-on-plum">
             {editorial.kicker}
           </span>
           <h2 className="mt-3 text-2xl font-bold leading-snug text-ink sm:text-3xl">
@@ -336,10 +336,10 @@ export function CountdownPlanner() {
               ref={resultRef}
               tabIndex={-1}
               aria-label="Kişisel çalışma planı sonucu"
-              className="mt-6 space-y-5 rounded-xl border-2 border-ink bg-surface p-6 focus:outline-none"
+              className="mt-6 space-y-5 rounded-2xl border-[1.5px] border-plum bg-surface p-6 focus:outline-none"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="inline-block rounded-full bg-yellow-soft px-3 py-1 text-xs font-bold text-ink">
+                <span className="inline-block rounded-full bg-plum px-3 py-1 text-xs font-bold text-on-plum">
                   {currentPlan.paceLabel}
                 </span>
                 <span className="text-sm font-medium text-ink-mid">
@@ -391,7 +391,7 @@ export function CountdownPlanner() {
                       key={phase.title}
                       className="rounded-xl border border-line bg-paper p-4"
                     >
-                      <p className="text-xs font-bold uppercase tracking-wide text-pink-deep">
+                      <p className="text-xs font-bold uppercase tracking-wide text-ink-mid">
                         {phase.durationDays} gün
                       </p>
                       <p className="mt-1 text-base font-bold text-ink">{phase.title}</p>
@@ -412,9 +412,9 @@ export function CountdownPlanner() {
 
         <section
           aria-labelledby={`${baseId}-cta-title`}
-          className="rounded-2xl bg-band p-6 text-on-band"
+          className="rounded-[24px] bg-plum p-6 text-on-plum"
         >
-          <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">
+          <span className="inline-block rounded-full bg-yellow px-3 py-1 text-xs font-bold text-ink">
             DÜNÜN ÖĞRENCİSİ, BUGÜNÜN ÖĞRETMENİ
           </span>
           <h2 id={`${baseId}-cta-title`} className="mt-3 text-xl font-bold sm:text-2xl">
@@ -423,7 +423,7 @@ export function CountdownPlanner() {
           <p className="mt-2 max-w-2xl text-base text-on-band/85">{editorial.ctaBody}</p>
           <a
             href={mainUrl("/", "yks-lgs-kac-gun-kaldi", editorial.ctaParams, TUTOR_LIST_HASH)}
-            className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-gold px-5 py-2 font-bold text-ink hover:bg-surface"
+            className="mt-4 inline-flex min-h-11 items-center rounded-full bg-yellow px-5 py-2 font-bold text-ink hover:bg-surface"
           >
             {editorial.ctaLabel}
           </a>

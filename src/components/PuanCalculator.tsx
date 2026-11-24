@@ -212,7 +212,7 @@ export function PuanCalculator() {
                   setAytAns({});
                   changed();
                 }}
-                className="h-5 w-5 accent-pink-deep"
+                className="h-5 w-5 accent-plum"
               />
               {m.label}
             </label>
@@ -262,7 +262,7 @@ export function PuanCalculator() {
                 setPlaced(e.target.checked);
                 changed();
               }}
-              className="mt-1 h-5 w-5 accent-pink-deep"
+              className="mt-1 h-5 w-5 accent-plum"
             />
             <span>Geçen yıl bir programa yerleştim (kırık OBP)</span>
           </label>
@@ -279,7 +279,7 @@ export function PuanCalculator() {
           ref={resultRef}
           tabIndex={-1}
           aria-labelledby="puan-sonuc"
-          className="mt-8 rounded-2xl border-2 border-ink bg-surface p-4 outline-offset-4 sm:p-5"
+          className="mt-8 rounded-2xl border-[1.5px] border-plum bg-surface p-4 outline-offset-4 sm:p-5"
         >
           <h2 id="puan-sonuc" className="text-xl font-bold">Sonuç</h2>
 
@@ -358,7 +358,7 @@ export function PuanCalculator() {
           )}
 
           {result.tytOk && (
-            <div className="mt-5 rounded-xl border-2 border-ink p-4">
+            <div className="mt-5 rounded-xl border-[1.5px] border-plum p-4">
               <p>Bu sıralamayla hangi bölümlere girebileceğini 2025 taban sıralarıyla gör.</p>
               <Link href="/bolum-bulucu" className={`${btnSecondary} mt-3`}>
                 Sıralamamla bölüm bul
@@ -366,16 +366,16 @@ export function PuanCalculator() {
             </div>
           )}
 
-          <div className="mt-5 rounded-xl bg-pink-pale p-4">
+          <div className="mt-5 rounded-xl border border-line bg-paper p-4">
             {result.weakest ? (
               <>
                 <p>
-                  Sıranı yükseltmenin en kısa yolu <strong>{result.weakest.subject}</strong> netin. Kimliği
-                  doğrulanmış hocalara göz at.
+                  Sıranı yükseltmenin en kısa yolu <strong>{result.weakest.subject}</strong> netin. YKS&apos;de ilk
+                  20.000&apos;e girmiş hocalara göz at.
                 </p>
                 <a
                   href={mainUrl("/", CAMPAIGN, { exam_type: result.weakest.exam, subject: result.weakest.subject }, TUTOR_LIST_HASH)}
-                  className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
+                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink px-5 py-2 font-bold text-white hover:bg-pink-deep"
                 >
                   {result.weakest.subject} hocalarını incele
                 </a>
@@ -385,7 +385,7 @@ export function PuanCalculator() {
                 <p>Sıranı yükseltmek için YKS&apos;de derece yapmış hocalara göz at.</p>
                 <a
                   href={mainUrl("/", CAMPAIGN)}
-                  className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
+                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink px-5 py-2 font-bold text-white hover:bg-pink-deep"
                 >
                   YKS özel ders hocalarını gör
                 </a>
