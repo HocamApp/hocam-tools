@@ -89,8 +89,8 @@ export function TargetNets({ mode, contribution }: Props) {
             type="button"
             onClick={() => pick(p)}
             aria-pressed={rank === p}
-            className={`inline-flex min-h-11 items-center rounded-lg border-2 px-4 py-2 text-base font-bold ${
-              rank === p ? "border-ink bg-ink text-white" : "border-ink bg-surface text-ink hover:bg-pink-pale"
+            className={`inline-flex min-h-11 items-center rounded-full border-[1.5px] px-4 py-2 text-base font-bold ${
+              rank === p ? "border-plum bg-plum text-on-plum" : "border-plum bg-surface text-ink hover:bg-paper"
             }`}
           >
             {nf.format(p)}

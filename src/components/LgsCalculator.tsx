@@ -122,7 +122,7 @@ export function LgsCalculator() {
                   setMode(id);
                   change();
                 }}
-                className="h-5 w-5 accent-pink-deep"
+                className="h-5 w-5 accent-plum"
               />
               {label}
             </label>
@@ -211,7 +211,7 @@ export function LgsCalculator() {
           ref={resultRef}
           tabIndex={-1}
           aria-labelledby="lgs-sonuc"
-          className="mt-8 max-w-xl rounded-2xl border-2 border-ink bg-surface p-5 outline-offset-4"
+          className="mt-8 max-w-xl rounded-2xl border-[1.5px] border-plum bg-surface p-5 outline-offset-4"
         >
           <h2 id="lgs-sonuc" className="text-xl font-bold">Sonuç</h2>
 

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_URL, TOOLS_PATH, mainUrl, toolsUrl } from "@/lib/site";
 import { TOOLS, type Tool } from "@/lib/tools";
+import { btnOnPlum } from "@/lib/ui";
 
 export type Faq = { q: string; a: string };
 
@@ -94,16 +95,13 @@ export function ToolPage({ tool, lead, faq, article, children, showCta = true, f
       {showCta && (
         <section
           aria-labelledby="destek"
-          className="mt-12 max-w-2xl rounded-2xl bg-pink-pale p-6"
+          className="mt-12 max-w-2xl rounded-[24px] bg-plum p-6 text-on-plum"
         >
           <h2 id="destek" className="text-xl font-bold">YKS hazırlığında yalnız değilsin</h2>
-          <p className="mt-2 text-ink">
-            Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
+          <p className="mt-2 text-on-plum-mid">
+            Hocam&apos;daki her hoca YKS&apos;de ilk 20.000&apos;e girmiş; onlarla birebir online ders yapabilirsin.
           </p>
-          <a
-            href={mainUrl("/", tool.slug)}
-            className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
-          >
+          <a href={mainUrl("/", tool.slug)} className={`mt-4 ${btnOnPlum}`}>
             YKS özel ders hocalarını gör
           </a>
         </section>
@@ -111,11 +109,15 @@ export function ToolPage({ tool, lead, faq, article, children, showCta = true, f
 
       <section aria-labelledby="diger" className="mt-12">
         <h2 id="diger" className="text-xl font-bold">Diğer araçlar</h2>
-        <ul className="mt-3 flex flex-col gap-2">
+        <ul className="mt-3 grid gap-3 sm:grid-cols-2">
           {others.map((t) => (
             <li key={t.slug}>
-              <Link href={`/${t.slug}`} className="font-medium text-pink-deep underline">
+              <Link
+                href={`/${t.slug}`}
+                className="flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-line bg-surface px-4 py-3 font-bold text-ink hover:border-plum"
+              >
                 {t.name}
+                <span aria-hidden="true">→</span>
               </Link>
             </li>
           ))}

@@ -51,15 +51,15 @@ function Val({ v, missing, fmt = nf.format }: { v: number | null; missing: strin
 function TableHeader() {
   const th = "flex items-center justify-center px-2 py-3 text-center";
   return (
-    <div aria-hidden="true" className="hidden border-2 border-ink bg-gold font-bold text-ink md:grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1.4fr)_4.5rem_22rem]">
+    <div aria-hidden="true" className="hidden border-[1.5px] border-plum bg-plum font-bold text-on-plum md:grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1.4fr)_4.5rem_22rem]">
       <div className={th}>Üniversite Adı</div>
-      <div className={`${th} border-l-2 border-ink`}>Bölüm</div>
-      <div className={`${th} border-l-2 border-ink`}>Puan Türü</div>
-      <div className={`${YEAR_COLS} border-l-2 border-ink`}>
+      <div className={`${th} border-l border-plum-quiet`}>Bölüm</div>
+      <div className={`${th} border-l border-plum-quiet`}>Puan Türü</div>
+      <div className={`${YEAR_COLS} border-l border-plum-quiet`}>
         <div className={th}>Yıl</div>
-        <div className={`${th} border-l border-ink`}>Kont.</div>
-        <div className={`${th} border-l border-ink`}>Taban Puan</div>
-        <div className={`${th} border-l border-ink`}>Başarı Sırası</div>
+        <div className={`${th} border-l border-plum-quiet`}>Kont.</div>
+        <div className={`${th} border-l border-plum-quiet`}>Taban Puan</div>
+        <div className={`${th} border-l border-plum-quiet`}>Başarı Sırası</div>
       </div>
     </div>
   );
@@ -70,18 +70,18 @@ function ProgramRow({ p, tur, yil, gecmisYillar }: { p: Program; tur: Tur; yil: 
   const td = "px-2 py-2 text-center tabular-nums";
   const vl = "md:border-l md:border-line";
   return (
-    <li className={`${GRID} mb-3 rounded-xl border-2 border-ink bg-surface md:mb-0 md:rounded-none md:border-t-0`}>
+    <li className={`${GRID} mb-3 rounded-xl border-[1.5px] border-plum bg-surface md:mb-0 md:rounded-none md:border-t-0`}>
       <div className="flex flex-col justify-center gap-0.5 px-3 pt-3 md:items-center md:px-2 md:py-3 md:text-center">
         <p className="font-bold text-ink">{p.uni}</p>
         <p className="text-sm text-ink-mid">{p.uniTur} üniversitesi</p>
       </div>
-      <div className="flex items-center px-3 pb-1 pt-1 md:justify-center md:border-l-2 md:border-ink md:px-2 md:py-3 md:text-center">
+      <div className="flex items-center px-3 pb-1 pt-1 md:justify-center md:border-l md:border-plum md:px-2 md:py-3 md:text-center">
         <p className="text-ink">{p.ad}</p>
       </div>
-      <div className="flex items-center px-3 pb-2 font-bold text-ink md:justify-center md:border-l-2 md:border-ink md:px-2 md:py-3">
-        <span className="rounded-full border-2 border-ink px-2 text-sm md:border-0 md:px-0 md:text-base">{tur}</span>
+      <div className="flex items-center px-3 pb-2 font-bold text-ink md:justify-center md:border-l md:border-plum md:px-2 md:py-3">
+        <span className="rounded-full border-[1.5px] border-plum px-2 text-sm md:border-0 md:px-0 md:text-base">{tur}</span>
       </div>
-      <div className="md:border-l-2 md:border-ink">
+      <div className="md:border-l md:border-plum">
         <table className="w-full table-fixed border-collapse text-sm md:text-base">
           <caption className="sr-only">
             {p.uni}, {p.ad}: yıllara göre kontenjan, taban puanı ve başarı sırası
@@ -93,7 +93,7 @@ function ProgramRow({ p, tur, yil, gecmisYillar }: { p: Program; tur: Tur; yil: 
             <col className="w-[32%] md:w-28" />
           </colgroup>
           <thead className="md:sr-only">
-            <tr className="border-t border-ink bg-gold text-ink">
+            <tr className="border-t border-plum bg-paper text-ink">
               <th scope="col" className="px-1 py-2 text-center font-bold">Yıl</th>
               <th scope="col" className="px-1 py-2 text-center font-bold">Kont.</th>
               <th scope="col" className="px-1 py-2 text-center font-bold">Taban Puan</th>
@@ -104,7 +104,7 @@ function ProgramRow({ p, tur, yil, gecmisYillar }: { p: Program; tur: Tur; yil: 
             {rows.map((r, i) => (
               <tr
                 key={r.yil}
-                className={`border-t ${i === 0 ? "border-ink md:border-t-0" : "border-line"} ${r.yil === yil ? "bg-pink-pale font-medium" : ""}`}
+                className={`border-t ${i === 0 ? "border-plum md:border-t-0" : "border-line"} ${r.yil === yil ? "bg-paper font-bold" : ""}`}
               >
                 <th scope="row" className={`${td} font-bold`}>{r.yil}</th>
                 <td className={`${td} ${vl}`}><Val v={r.kont} missing="veri yok" /></td>
@@ -296,7 +296,7 @@ export function BolumBulucu() {
               </p>
               <nav aria-label="Gruplara git" className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-base">
                 {BANDS.filter((b) => result.matches[b].length > 0).map((b) => (
-                  <a key={b} href={`#bolum-${b}`} className="font-medium text-pink-deep underline">
+                  <a key={b} href={`#bolum-${b}`} className="font-medium text-ink underline underline-offset-4">
                     {BAND_TEXT[b].title} ({nf.format(result.matches[b].length)})
                   </a>
                 ))}

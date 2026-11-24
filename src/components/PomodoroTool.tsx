@@ -581,7 +581,7 @@ export function PomodoroTool() {
       {authChecked && !authUser && (
         <section
           aria-label="Hesap oturumu bilgisi"
-          className="rounded-2xl border border-line bg-pink-pale/60 p-5"
+          className="rounded-2xl border border-line bg-surface p-5"
         >
           <p className="text-base font-bold text-ink">
             Eski sayaçlarını ve toplam çalışma saatini kaydetmek ister misin
@@ -591,7 +591,7 @@ export function PomodoroTool() {
           </p>
           <a
             href={mainUrl("/login", "pomodoro-sayaci")}
-            className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 text-sm font-bold text-white hover:bg-ink"
+            className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink-deep px-5 py-2 text-sm font-bold text-white hover:bg-plum"
           >
             Giriş yap
           </a>
@@ -601,10 +601,10 @@ export function PomodoroTool() {
       {(authUser || sessionCount > 0) && (
         <section
           aria-label="Toplam çalışma özeti"
-          className="rounded-2xl bg-band p-6 text-on-band"
+          className="rounded-[24px] bg-plum p-6 text-on-plum"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="inline-block rounded-full bg-gold px-3 py-1 text-xs font-bold text-ink">
+            <span className="inline-block rounded-full bg-yellow px-3 py-1 text-xs font-bold text-ink">
               {authUser ? "HESAP TAKİBİ AÇIK" : "BU OTURUM ÖZETİ"}
             </span>
             {authUser && <span className="text-xs text-on-band/80">{authUser.email}</span>}
@@ -643,8 +643,8 @@ export function PomodoroTool() {
             onClick={() => handleSwitchMode("focus")}
             className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
               mode === "focus"
-                ? "border-ink bg-ink text-white"
-                : "border-line bg-surface text-ink hover:border-ink"
+                ? "border-plum bg-plum text-on-plum"
+                : "border-line bg-surface text-ink hover:border-plum"
             }`}
           >
             Odak süresi ({activeFocusMinutes} dk)
@@ -656,8 +656,8 @@ export function PomodoroTool() {
             onClick={() => handleSwitchMode("break")}
             className={`min-h-11 rounded-xl border px-4 py-2 text-sm font-bold transition-colors ${
               mode === "break"
-                ? "border-ink bg-ink text-white"
-                : "border-line bg-surface text-ink hover:border-ink"
+                ? "border-plum bg-plum text-on-plum"
+                : "border-line bg-surface text-ink hover:border-plum"
             }`}
           >
             Mola süresi ({activeBreakMinutes} dk)
@@ -684,7 +684,7 @@ export function PomodoroTool() {
             className="mx-auto mt-5 h-3 w-full max-w-md overflow-hidden rounded-full bg-paper border border-line"
           >
             <div
-              className={`h-full transition-all duration-300 ${mode === "focus" ? "bg-pink" : "bg-ink"}`}
+              className={`h-full transition-all duration-300 ${mode === "focus" ? "bg-pink" : "bg-plum"}`}
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -700,14 +700,14 @@ export function PomodoroTool() {
           <button
             type="button"
             onClick={handleCompleteAndSave}
-            className="inline-flex min-h-11 items-center justify-center rounded-lg border border-ink-mid bg-paper px-4 py-2 text-sm font-bold text-ink hover:bg-yellow-soft"
+            className="inline-flex min-h-11 items-center justify-center rounded-full border-[1.5px] border-plum bg-surface px-4 py-2 text-sm font-bold text-ink hover:bg-paper hover:bg-yellow-soft"
           >
             Oturumu tamamla ve kaydet
           </button>
         </div>
 
         {statusMessage && (
-          <p role="status" className="mt-4 rounded-xl bg-yellow-soft px-4 py-3 text-sm font-medium text-ink">
+          <p role="status" className="mt-4 rounded-xl border border-line bg-paper px-4 py-3 text-sm font-medium text-ink">
             {statusMessage}
           </p>
         )}
@@ -729,7 +729,7 @@ export function PomodoroTool() {
                 onClick={() =>
                   applyTimerConfig(preset.label, preset.focusMinutes, preset.breakMinutes, "focus")
                 }
-                className="min-h-11 rounded-xl border border-line bg-surface p-3 text-left hover:border-ink"
+                className="min-h-11 rounded-xl border border-line bg-surface p-3 text-left hover:border-plum"
               >
                 <span className="block text-sm font-bold text-ink">{preset.label}</span>
                 <span className="mt-0.5 block text-xs text-ink-mid">
@@ -759,7 +759,7 @@ export function PomodoroTool() {
                       "focus",
                     )
                   }
-                  className="min-h-11 rounded-xl border border-ink-mid bg-yellow-soft/60 p-3 text-left hover:border-ink hover:bg-yellow-soft"
+                  className="min-h-11 rounded-xl border border-ink-mid bg-paper p-3 text-left hover:border-plum"
                 >
                   <span className="block text-sm font-bold text-ink">
                     {preset.label || "Genel odak"}
@@ -876,14 +876,14 @@ export function PomodoroTool() {
                         "focus",
                       )
                     }
-                    className="inline-flex min-h-11 items-center rounded-lg border border-ink px-3 py-2 text-sm font-bold text-ink hover:bg-pink-pale"
+                    className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-plum px-3 py-2 text-sm font-bold text-ink hover:bg-paper"
                   >
                     Tekrar başlat
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDeleteSession(item.id)}
-                    className="inline-flex min-h-11 items-center rounded-lg border border-line px-3 py-2 text-sm font-medium text-error hover:border-error"
+                    className="inline-flex min-h-11 items-center rounded-full border border-line px-3 py-2 text-sm font-medium text-error hover:border-error"
                   >
                     Sil
                   </button>

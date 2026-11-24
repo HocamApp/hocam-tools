@@ -40,7 +40,12 @@ export function SharedNavbar() {
 
   return (
     <>
-      <div className="sticky top-0 z-50 h-14 bg-surface md:h-[120px]">
+      {/* The reserved height follows the navbar's own once it reports it: a
+          signed-out navbar is one row, so a fixed 120 px left a blank strip. */}
+      <div
+        className="sticky top-0 z-50 h-14 bg-paper md:h-[120px]"
+        style={topHeight === null ? undefined : { height: topHeight }}
+      >
         <iframe
           ref={topRef}
           title="Hocam ana menü"
