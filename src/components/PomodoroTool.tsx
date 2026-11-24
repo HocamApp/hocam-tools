@@ -591,7 +591,7 @@ export function PomodoroTool() {
           </p>
           <a
             href={mainUrl("/login", "pomodoro-sayaci")}
-            className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink px-5 py-2 text-sm font-bold text-white hover:bg-pink-deep"
+            className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink-deep px-5 py-2 text-sm font-bold text-white hover:bg-plum"
           >
             Giriş yap
           </a>

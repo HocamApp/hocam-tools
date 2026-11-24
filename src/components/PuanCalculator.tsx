@@ -375,7 +375,7 @@ export function PuanCalculator() {
                 </p>
                 <a
                   href={mainUrl("/", CAMPAIGN, { exam_type: result.weakest.exam, subject: result.weakest.subject }, TUTOR_LIST_HASH)}
-                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink px-5 py-2 font-bold text-white hover:bg-pink-deep"
+                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink-deep px-5 py-2 font-bold text-white hover:bg-plum"
                 >
                   {result.weakest.subject} hocalarını incele
                 </a>
@@ -385,7 +385,7 @@ export function PuanCalculator() {
                 <p>Sıranı yükseltmek için YKS&apos;de derece yapmış hocalara göz at.</p>
                 <a
                   href={mainUrl("/", CAMPAIGN)}
-                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink px-5 py-2 font-bold text-white hover:bg-pink-deep"
+                  className="mt-3 inline-flex min-h-11 items-center rounded-full bg-pink-deep px-5 py-2 font-bold text-white hover:bg-plum"
                 >
                   YKS özel ders hocalarını gör
                 </a>
