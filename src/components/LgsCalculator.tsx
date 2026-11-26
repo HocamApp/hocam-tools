@@ -16,7 +16,8 @@ import {
 } from "@/lib/lgs";
 import { parseCount } from "@/lib/net";
 import { roundRank } from "@/lib/puan";
-import { btnPrimary, btnSecondary, inputCls, labelCls } from "@/lib/ui";
+import { btnPrimary, btnSecondary, cardCls, inputCls, labelCls, resultAsideCls, toolGridCls } from "@/lib/ui";
+import { ResultPlaceholder } from "@/components/ToolParts";
 
 const nf = new Intl.NumberFormat("tr-TR");
 const pct = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -130,8 +131,9 @@ export function LgsCalculator() {
         </div>
       </fieldset>
 
+      <div className={`${toolGridCls} mt-6`}>
       {mode === "net" ? (
-        <form onSubmit={onSubmitNet} noValidate aria-label="LGS net ile sıralama hesaplama" className="mt-6">
+        <form onSubmit={onSubmitNet} noValidate aria-label="LGS net ile sıralama hesaplama" className={`${cardCls} p-4 sm:p-6`}>
           <div className="grid gap-4 sm:grid-cols-2">
             {LGS_SUBJECTS.map((s) => {
               const a = answers[s.id] ?? BLANK;
@@ -178,7 +180,8 @@ export function LgsCalculator() {
           </div>
         </form>
       ) : (
-        <form onSubmit={onSubmitPuan} noValidate aria-label="LGS puanı ile sıralama hesaplama" className="mt-6 max-w-md">
+        <form onSubmit={onSubmitPuan} noValidate aria-label="LGS puanı ile sıralama hesaplama" className={`${cardCls} p-4 sm:p-6`}>
+          <div className="max-w-md">
           <label htmlFor="lgs-puan" className={labelCls}>LGS puanın (100–500)</label>
           <input
             id="lgs-puan"
@@ -199,6 +202,7 @@ export function LgsCalculator() {
             Sonuç belgendeki Merkezî Sınav puanı. Örnek: 432,57
           </p>
           {error && <p id="lgs-hata" className="mt-1 text-sm font-medium text-error">{error}</p>}
+          </div>
           <div className="mt-6 flex flex-wrap gap-3">
             <button type="submit" className={btnPrimary}>Sıramı hesapla</button>
             <button type="button" onClick={reset} className={btnSecondary}>Temizle</button>
@@ -206,12 +210,23 @@ export function LgsCalculator() {
         </form>
       )}
 
+      <div className={resultAsideCls}>
+      {!out && (
+        <ResultPlaceholder
+          title="Puanın, yüzdelik dilimin ve sıran burada görünecek"
+          steps={
+            mode === "net"
+              ? ["Her dersin doğru ve yanlış sayısını gir.", "Sıramı hesapla'ya bas."]
+              : ["Sonuç belgendeki LGS puanını gir.", "Sıramı hesapla'ya bas."]
+          }
+        />
+      )}
       {out && (
         <section
           ref={resultRef}
           tabIndex={-1}
           aria-labelledby="lgs-sonuc"
-          className="mt-8 max-w-xl rounded-2xl border-2 border-ink bg-surface p-5 outline-offset-4"
+          className="rounded-2xl border-2 border-ink bg-surface p-5 outline-offset-4"
         >
           <h2 id="lgs-sonuc" className="text-xl font-bold">Sonuç</h2>
 
@@ -272,6 +287,8 @@ export function LgsCalculator() {
           )}
         </section>
       )}
+      </div>
+      </div>
     </div>
   );
 }

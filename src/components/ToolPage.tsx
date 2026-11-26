@@ -60,73 +60,90 @@ export function ToolPage({ tool, lead, faq, article, children, showCta = true, f
         ]}
       />
 
-      <nav aria-label="Sayfa yolu" className="text-sm text-ink-mid">
-        <ol className="flex flex-wrap items-center gap-x-2">
-          <li>
-            <a href={SITE_URL} className="underline">Hocam</a>
-          </li>
-          <li aria-hidden="true">›</li>
-          <li>
-            <a href={TOOLS_PATH} className="underline">Araçlar</a>
-          </li>
-          <li aria-hidden="true">›</li>
-          <li aria-current="page">{tool.name}</li>
-        </ol>
-      </nav>
+      <header className="shell pb-8 pt-8 sm:pt-12">
+        <nav aria-label="Sayfa yolu" className="text-sm text-ink-mid">
+          <ol className="flex flex-wrap items-center gap-x-2">
+            <li>
+              <a href={SITE_URL} className="underline">Hocam</a>
+            </li>
+            <li aria-hidden="true">›</li>
+            <li>
+              <a href={TOOLS_PATH} className="underline">Araçlar</a>
+            </li>
+            <li aria-hidden="true">›</li>
+            <li aria-current="page">{tool.name}</li>
+          </ol>
+        </nav>
 
-      <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">{tool.name}</h1>
-      <p className="mt-3 max-w-2xl text-lg text-ink-mid">{lead}</p>
+        <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight sm:text-4xl">{tool.name}</h1>
+        <p className="mt-3 max-w-3xl text-lg text-ink-mid">{lead}</p>
+      </header>
 
-      <div className="mt-8">{children}</div>
+      <div className="shell pb-16 sm:pb-20">{children}</div>
 
-      <div className="prose-hocam mt-12 max-w-2xl">{article}</div>
+      {/* Açıklama: tam genişlikte beyaz bant; yanında diğer araçlar. */}
+      <section aria-label="Araç hakkında" className="border-y border-line bg-surface py-14 sm:py-20">
+        <div className="shell grid gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+          <div className="prose-hocam max-w-[70ch]">{article}</div>
 
-      <section aria-labelledby="sss" className="prose-hocam mt-12 max-w-2xl">
-        <h2 id="sss">Sık sorulan sorular</h2>
-        {faq.map((item) => (
-          <div key={item.q}>
-            <h3>{item.q}</h3>
-            <p>{item.a}</p>
-          </div>
-        ))}
+          <nav aria-labelledby="diger" className="lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]">
+            <h2 id="diger" className="text-xl font-bold">Diğer araçlar</h2>
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              {others.map((t) => (
+                <li key={t.slug}>
+                  <Link
+                    href={`/${t.slug}`}
+                    className="flex min-h-14 items-center rounded-xl border border-line bg-paper px-4 py-3 font-medium text-pink-deep underline hover:border-ink"
+                  >
+                    {t.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </section>
+
+      <section aria-labelledby="sss" className="shell grid gap-8 py-14 sm:py-20 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-12">
+        <div>
+          <h2 id="sss" className="text-2xl font-bold leading-tight sm:text-3xl">Sık sorulan sorular</h2>
+          <p className="mt-4 text-sm leading-relaxed text-ink-mid">
+            Son güncelleme: {updated}.{" "}
+            {footerNote ??
+              "Sonuçlar bilgilendirme amaçlıdır; resmî değerlendirme ve kılavuz hükümleri ÖSYM'ye aittir. Bu sayfada girdiğin bilgiler cihazından çıkmaz ve kaydedilmez."}
+          </p>
+        </div>
+        <div className="divide-y divide-line rounded-2xl border border-line bg-surface px-5 sm:px-7">
+          {faq.map((item) => (
+            <div key={item.q} className="py-6">
+              <h3 className="text-lg font-bold leading-snug">{item.q}</h3>
+              <p className="mt-2 leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {showCta && (
-        <section
-          aria-labelledby="destek"
-          className="mt-12 max-w-2xl rounded-2xl bg-pink-pale p-6"
-        >
-          <h2 id="destek" className="text-xl font-bold">YKS hazırlığında yalnız değilsin</h2>
-          <p className="mt-2 text-ink">
-            Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
-          </p>
-          <a
-            href={mainUrl("/", tool.slug)}
-            className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink"
+        <div className="shell pb-16 sm:pb-20">
+          <section
+            aria-labelledby="destek"
+            className="flex flex-col gap-6 rounded-2xl bg-pink-pale p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between"
           >
-            YKS özel ders hocalarını gör
-          </a>
-        </section>
+            <div className="max-w-2xl">
+              <h2 id="destek" className="text-2xl font-bold">YKS hazırlığında yalnız değilsin</h2>
+              <p className="mt-2 text-ink">
+                Hocam&apos;da YKS&apos;de derece yapmış, kimliği doğrulanmış hocalarla birebir online ders yapabilirsin.
+              </p>
+            </div>
+            <a
+              href={mainUrl("/", tool.slug)}
+              className="inline-flex min-h-11 shrink-0 items-center self-start rounded-lg bg-pink-deep px-5 py-2 font-bold text-white hover:bg-ink lg:self-auto"
+            >
+              YKS özel ders hocalarını gör
+            </a>
+          </section>
+        </div>
       )}
-
-      <section aria-labelledby="diger" className="mt-12">
-        <h2 id="diger" className="text-xl font-bold">Diğer araçlar</h2>
-        <ul className="mt-3 flex flex-col gap-2">
-          {others.map((t) => (
-            <li key={t.slug}>
-              <Link href={`/${t.slug}`} className="font-medium text-pink-deep underline">
-                {t.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <p className="mt-12 text-sm text-ink-mid">
-        Son güncelleme: {updated}.{" "}
-        {footerNote ??
-          "Sonuçlar bilgilendirme amaçlıdır; resmî değerlendirme ve kılavuz hükümleri ÖSYM'ye aittir. Bu sayfada girdiğin bilgiler cihazından çıkmaz ve kaydedilmez."}
-      </p>
     </>
   );
 }

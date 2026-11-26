@@ -39,12 +39,13 @@ export default function ToolsHub() {
           ],
         }}
       />
+      <div className="shell pb-16 pt-8 sm:pb-24 sm:pt-12">
       <h1 className="text-3xl font-bold leading-tight sm:text-4xl">{TITLE}</h1>
       <p className="mt-3 max-w-2xl text-lg text-ink-mid">
         Beş ücretsiz araç: YKS puan ve sıralama, LGS sıralama, bölüm bulucu, YKS ve LGS kaç gün kaldı planlayıcısı ile Pomodoro çalışma sayacı. Giriş yaptığında Pomodoro oturumların hesabında saklanır.
       </p>
 
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {TOOLS.map((tool) => (
           <li key={tool.slug}>
             <Link
@@ -57,6 +58,7 @@ export default function ToolsHub() {
           </li>
         ))}
       </ul>
+      </div>
     </>
   );
 }

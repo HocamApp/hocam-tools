@@ -30,7 +30,8 @@ import {
 } from "@/lib/net";
 import type { Scheme } from "@/lib/osym-data";
 import { TUTOR_LIST_HASH, mainUrl } from "@/lib/site";
-import { btnPrimary, btnSecondary, inputCls, labelCls } from "@/lib/ui";
+import { btnPrimary, btnSecondary, cardCls, inputCls, labelCls, resultAsideCls, toolGridCls } from "@/lib/ui";
+import { ResultPlaceholder } from "@/components/ToolParts";
 
 const CAMPAIGN = "yks-puan-siralama-hesaplama";
 const BLANK: Answers = { correct: "", wrong: "" };
@@ -144,7 +145,7 @@ export function PuanCalculator() {
   function fieldset(prefix: "t" | "a", title: string, sections: Section[], live: ReturnType<typeof computeNet>,
     answers: Record<string, Answers>, set: (f: (p: Record<string, Answers>) => Record<string, Answers>) => void) {
     return (
-      <section className="mt-8" aria-labelledby={`${prefix}-baslik`}>
+      <section className="mt-8 first:mt-0" aria-labelledby={`${prefix}-baslik`}>
         <h2 id={`${prefix}-baslik`} className="text-xl font-bold">{title}</h2>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
           {sections.map((section) => {
@@ -220,9 +221,9 @@ export function PuanCalculator() {
         </div>
       </fieldset>
 
-      <TargetNets mode={mode} contribution={targetContribution} />
 
-      <form onSubmit={onSubmit} noValidate aria-label="YKS puan ve sıralama hesaplama">
+      <div className={`${toolGridCls} mt-6`}>
+      <form onSubmit={onSubmit} noValidate aria-label="YKS puan ve sıralama hesaplama" className={`${cardCls} p-4 sm:p-6`}>
 
         {fieldset("t", "TYT netlerin", TYT_SECTIONS, tytLive, tytAns, setTytAns)}
         {mode !== "tyt" &&
@@ -274,12 +275,19 @@ export function PuanCalculator() {
         </div>
       </form>
 
+      <div className={resultAsideCls}>
+      {!result && (
+        <ResultPlaceholder
+          title="Sonucun burada görünecek"
+          steps={["Alanını seç.", "TYT ve AYT doğru-yanlış sayılarını gir.", "İstersen diploma notunu ekle ve hesapla."]}
+        />
+      )}
       {result && (
         <section
           ref={resultRef}
           tabIndex={-1}
           aria-labelledby="puan-sonuc"
-          className="mt-8 rounded-2xl border-2 border-ink bg-surface p-4 outline-offset-4 sm:p-5"
+          className="rounded-2xl border-2 border-ink bg-surface p-4 outline-offset-4 sm:p-5"
         >
           <h2 id="puan-sonuc" className="text-xl font-bold">Sonuç</h2>
 
@@ -394,6 +402,10 @@ export function PuanCalculator() {
           </div>
         </section>
       )}
+      </div>
+      </div>
+
+      <TargetNets mode={mode} contribution={targetContribution} />
     </div>
   );
 }

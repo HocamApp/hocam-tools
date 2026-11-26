@@ -73,7 +73,7 @@ export function TargetNets({ mode, contribution }: Props) {
   const sum = (rows: { net: number }[]) => rows.reduce((t, r) => t + r.net, 0);
 
   return (
-    <section className="mt-8 rounded-2xl border border-line bg-surface p-4 sm:p-5" aria-labelledby="hedef-baslik">
+    <section className="mt-10 rounded-2xl border border-line bg-surface p-4 sm:p-5" aria-labelledby="hedef-baslik">
       <h2 id="hedef-baslik" className="text-xl font-bold">Hedef sıralamama kaç net lazım?</h2>
       <p className="mt-1 text-sm text-ink-mid">
         Hedef sıranı yaz ya da hazır olanlardan birini seç; yukarıda seçtiğin alana göre tahmini netlerini göster.

@@ -17,7 +17,7 @@ import {
   type Tur,
 } from "@/lib/bolum";
 import { roundRank } from "@/lib/puan";
-import { btnPrimary, btnSecondary, inputCls, labelCls } from "@/lib/ui";
+import { btnPrimary, btnSecondary, cardCls, inputCls, labelCls } from "@/lib/ui";
 
 const nf = new Intl.NumberFormat("tr-TR");
 const pf = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
@@ -177,7 +177,9 @@ export function BolumBulucu() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} noValidate aria-label="Sıralamadan bölüm bulma" className="max-w-xl">
+      <form onSubmit={onSubmit} noValidate aria-label="Sıralamadan bölüm bulma" className={`${cardCls} p-4 sm:p-6`}>
+        <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+        <div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="bolum-tur" className={labelCls}>Puan türün</label>
@@ -222,7 +224,8 @@ export function BolumBulucu() {
           <p id="bolum-hata" role="alert" className="mt-1 text-sm font-medium text-error">{error}</p>
         )}
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:self-start">
           <div>
             <label htmlFor="bolum-ara" className={labelCls}>Üniversite veya bölüm ara (isteğe bağlı)</label>
             <input
@@ -255,6 +258,7 @@ export function BolumBulucu() {
             </select>
           </div>
         </div>
+        </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
           <button type="submit" disabled={loading} className={btnPrimary}>
@@ -271,7 +275,7 @@ export function BolumBulucu() {
           ref={resultRef}
           tabIndex={-1}
           aria-labelledby="bolum-sonuc"
-          className="mt-8 outline-offset-4"
+          className="mt-10 outline-offset-4"
         >
           <h2 id="bolum-sonuc" className="text-xl font-bold">
             {count > 0 ? `${nf.format(count)} program bulundu` : "Bu sıralamayla eşleşen program bulunamadı"}
