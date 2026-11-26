@@ -49,12 +49,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
         <SharedNavbar />
 
-        <main id="icerik" tabIndex={-1} className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 focus:outline-none sm:py-12">
+        {/* Genişliği sayfalar belirler (.shell = 1248 px); tam genişlikteki bantlar kenarlara uzanabilsin. */}
+        <main id="icerik" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </main>
 
         <footer className="border-t border-line bg-surface">
-          <div className="mx-auto max-w-4xl px-4 py-8 text-sm text-ink-mid">
+          <div className="shell py-8 text-sm text-ink-mid">
             <nav aria-label="Alt bağlantılar">
               <ul className="flex flex-wrap gap-x-6">
                 {FOOTER_LINKS.map((l) => (
