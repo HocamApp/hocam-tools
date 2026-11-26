@@ -27,11 +27,21 @@
   --on-band: #fff1f6;
   --success: #1c7a55;
   --error: #b33a24;
+
+  /* Üst menünün yüksekliği. SharedNavbar, navbar yüksekliğini bildirince bunu
+     günceller; yapışkan sonuç panelleri onun altında durur. */
+  --nav-h: 56px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --nav-h: 120px;
+  }
 }
 
 @layer base {
   html {
-    scroll-padding-top: 1rem;
+    scroll-padding-top: calc(var(--nav-h) + 1rem);
   }
   body {
     background: var(--paper);
@@ -42,12 +52,21 @@
     outline: 3px solid var(--ink);
     outline-offset: 2px;
   }
+  /* Plum bantta mürekkep halka görünmez; sarıya döner. */
+  .bg-plum :focus-visible {
+    outline-color: var(--yellow);
+  }
 }
 
 @layer components {
+  /* Sayfa kabı: ana sitenin herkese açık sayfalarıyla aynı genişlik (1248 px). */
+  .shell {
+    @apply mx-auto w-full max-w-[1248px] px-4 sm:px-6;
+  }
+
   /* Açıklayıcı yazılar için küçük tipografi; typography eklentisi gerekmez. */
   .prose-hocam h2 {
-    @apply mt-10 text-2xl font-bold first:mt-0;
+    @apply mt-10 text-2xl font-bold leading-tight tracking-[-0.015em] first:mt-0;
   }
   .prose-hocam h3 {
     @apply mt-6 text-lg font-bold;
@@ -57,6 +76,9 @@
   }
   .prose-hocam ul {
     @apply mt-3 list-disc space-y-1 pl-6;
+  }
+  .prose-hocam ol {
+    @apply mt-3 list-decimal space-y-2 pl-6;
   }
   .prose-hocam a {
     @apply font-medium text-ink underline underline-offset-4;

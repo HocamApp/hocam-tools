@@ -21,7 +21,7 @@ import {
   pomodoroCacheKey,
 } from "@/lib/pomodoro";
 import { mainUrl } from "@/lib/site";
-import { btnPrimary, btnSecondary, inputCls, labelCls } from "@/lib/ui";
+import { btnPrimary, btnSecondary, inputCls, labelCls, resultAsideCls } from "@/lib/ui";
 
 const DEFAULT_API_URL =
   process.env.NODE_ENV === "production"
@@ -629,6 +629,8 @@ export function PomodoroTool() {
         </section>
       )}
 
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start">
+      <div className={resultAsideCls}>
       <section
         ref={timerRegionRef}
         tabIndex={-1}
@@ -718,6 +720,9 @@ export function PomodoroTool() {
         )}
       </section>
 
+      </div>
+
+      <div className="space-y-8">
       <section aria-label="Hazır ve eski sayaçlar" className="space-y-5">
         <div>
           <h2 className="text-lg font-bold text-ink">Hazır şablonlar</h2>
@@ -893,6 +898,8 @@ export function PomodoroTool() {
           </ul>
         </section>
       )}
+      </div>
+      </div>
     </div>
   );
 }

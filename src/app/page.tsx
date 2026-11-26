@@ -78,6 +78,7 @@ export default function ToolsHub() {
           ],
         }}
       />
+      <div className="shell pb-16 pt-8 sm:pb-24 sm:pt-12">
       <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-[40px]">{TITLE}</h1>
       <p className="mt-2 max-w-2xl text-base text-ink-mid sm:text-lg">
         Beş araç, hepsi ücretsiz. Hesaplama araçlarına girdiğin sayılar cihazından çıkmaz; giriş yaptığında Pomodoro
@@ -128,6 +129,7 @@ export default function ToolsHub() {
       <p className="mt-4 text-sm text-ink-mid">
         Sonuçlar bilgilendirme amaçlıdır; resmî değerlendirme ÖSYM ve MEB&apos;e aittir.
       </p>
+      </div>
     </>
   );
 }

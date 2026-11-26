@@ -24,3 +24,13 @@ export const chipCls = "inline-block rounded-full bg-plum px-3 py-1 text-xs font
 /** Seçili / seçilmemiş geçiş düğmesi kenarı ve dolgusu. */
 export const toggleOn = "border-plum bg-plum text-on-plum";
 export const toggleOff = "border-line bg-surface text-ink hover:border-plum";
+
+/** Kart: beyaz yüzey, ince çizgi. */
+export const cardCls = "rounded-[24px] border border-line bg-surface";
+
+/** Araç düzeni: girdiler solda, sonuç sağda (masaüstü); telefonda tek sütun. */
+export const toolGridCls = "grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(360px,420px)] lg:items-start xl:gap-10";
+
+/** Sonuç paneli: masaüstünde girdilerin yanında yapışkan durur. İç kaydırma yok: panel
+    formdan uzunsa satırı o belirler ve sayfayla birlikte akar, hiçbir kısmı gizli kalmaz. */
+export const resultAsideCls = "lg:sticky lg:top-[calc(var(--nav-h)+1.5rem)]";

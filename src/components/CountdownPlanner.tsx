@@ -161,7 +161,7 @@ export function CountdownPlanner() {
         role="tabpanel"
         id={`${baseId}-panel-${activeExam}`}
         aria-labelledby={`${baseId}-tab-${activeExam}`}
-        className="space-y-8"
+        className="grid gap-8 lg:grid-cols-2 lg:items-start"
       >
         <section
           aria-label={`${schedule.title} geri sayımı`}
@@ -348,7 +348,7 @@ export function CountdownPlanner() {
                 </span>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border border-line bg-paper p-4">
                   <p className="text-xs font-medium text-ink-mid">Haftalık konu hedefin</p>
                   <p className="mt-1 text-2xl font-bold tabular-nums text-ink">
@@ -385,7 +385,7 @@ export function CountdownPlanner() {
 
               <div className="space-y-3">
                 <h3 className="text-lg font-bold text-ink">Sınava kadar yol haritan</h3>
-                <ol className="grid gap-3 sm:grid-cols-3">
+                <ol className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                   {currentPlan.phases.map((phase) => (
                     <li
                       key={phase.title}
@@ -412,7 +412,7 @@ export function CountdownPlanner() {
 
         <section
           aria-labelledby={`${baseId}-cta-title`}
-          className="rounded-[24px] bg-plum p-6 text-on-plum"
+          className="rounded-[24px] bg-plum p-6 text-on-plum sm:p-8 lg:col-span-2"
         >
           <span className="inline-block rounded-full bg-yellow px-3 py-1 text-xs font-bold text-ink">
             DÜNÜN ÖĞRENCİSİ, BUGÜNÜN ÖĞRETMENİ

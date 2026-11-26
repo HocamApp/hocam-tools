@@ -38,6 +38,11 @@ export function SharedNavbar() {
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  // Yapışkan paneller (sonuç, sayaç) menünün gerçek yüksekliğinin altında dursun.
+  useEffect(() => {
+    if (topHeight !== null) document.documentElement.style.setProperty("--nav-h", `${topHeight}px`);
+  }, [topHeight]);
+
   return (
     <>
       {/* The reserved height follows the navbar's own once it reports it: a
